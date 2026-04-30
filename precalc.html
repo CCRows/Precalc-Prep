@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cooper · AP Precalc Lockdown</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;700&family=Inter+Tight:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0e1726;--paper:#f4ede0;--paper-soft:#ebe2d0;--accent:#d64830;--accent-soft:#e8a999;--green:#4a7c4f;--gold:#c8932a;--line:#c9bfa8;--muted:#6b7280}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:'Inter Tight',sans-serif;line-height:1.5;min-height:100vh}
+header{border-bottom:2px solid var(--ink);padding:1.2rem 2rem;display:flex;justify-content:space-between;align-items:baseline;background:var(--paper);position:sticky;top:0;z-index:10}
+header .brand{font-family:'Fraunces',serif;font-style:italic;font-weight:600;font-size:1.4rem}
+header .brand .star{color:var(--accent);font-style:normal}
+.top-tabs{background:var(--ink);overflow-x:auto;display:flex}
+.top-tab{padding:.9rem 1.5rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:#e8dcc4;cursor:pointer;border:none;background:none;white-space:nowrap;border-right:1px solid rgba(255,255,255,.1)}
+.top-tab:hover{background:rgba(214,72,48,.2);color:#fff}
+.top-tab.active{background:var(--accent);color:#fff}
+.view{display:none}
+.view.active{display:block}
+.hero{padding:3rem 2rem 1.5rem;max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:3rem;align-items:center}
+.hero h1{font-family:'Fraunces',serif;font-weight:400;font-size:clamp(2.4rem,4.5vw,4rem);line-height:.98;margin-bottom:1rem;letter-spacing:-.03em}
+.hero h1 em{font-style:italic;color:var(--accent)}
+.hero .label{font-family:'JetBrains Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:var(--muted);margin-bottom:1rem}
+.hero p{font-size:1.05rem;color:#1f2a3d;max-width:520px;margin-top:1rem}
+.target-tag{display:inline-block;margin-top:1.4rem;background:var(--ink);color:var(--paper);padding:.5rem 1rem;font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase}
+.target-tag strong{color:var(--accent-soft)}
+.cd-card{background:var(--ink);color:var(--paper);padding:2rem;position:relative;box-shadow:8px 8px 0 var(--accent)}
+.cd-card .ed{position:absolute;top:1rem;right:1rem;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.2em;color:var(--accent);border:1px solid var(--accent);padding:4px 8px}
+.cd-card .date{font-family:'Fraunces',serif;font-size:1.4rem;color:var(--accent-soft);margin-bottom:.5rem}
+.cd-card .name{font-family:'Fraunces',serif;font-weight:600;font-size:2rem;margin-bottom:1.5rem}
+.cd-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;border-top:1px solid rgba(244,237,224,.2);padding-top:1.5rem}
+.cd-grid .num{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:2.2rem;text-align:center}
+.cd-grid .lbl{font-family:'JetBrains Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;text-align:center;opacity:.6;margin-top:.4rem}
+.progress-section{max-width:1400px;margin:0 auto;padding:1rem 2rem 2rem}
+.progress-meta{display:flex;justify-content:space-between;margin-bottom:.6rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em}
+.progress-bar{height:8px;background:var(--paper-soft);border:1px solid var(--ink)}
+.progress-fill{height:100%;background:var(--accent);width:0;transition:width .6s}
+.unit-tabs{max-width:1400px;margin:1.5rem auto 0;padding:0 2rem;display:flex;border-bottom:2px solid var(--ink);overflow-x:auto}
+.unit-tab{background:var(--paper-soft);border:2px solid var(--ink);border-bottom:none;padding:.7rem 1.2rem;font-family:'JetBrains Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;color:var(--ink);margin-right:-2px;white-space:nowrap}
+.unit-tab.active{background:var(--ink);color:var(--paper)}
+.days-section{max-width:1400px;margin:2rem auto;padding:0 2rem 4rem}
+.unit-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px dashed var(--line);flex-wrap:wrap;gap:1rem}
+.unit-header h2{font-family:'Fraunces',serif;font-weight:400;font-size:2rem}
+.unit-header h2 em{font-style:italic;color:var(--accent)}
+.unit-header .meta{font-family:'JetBrains Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.days-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:1rem}
+.day-card{background:var(--paper);border:2px solid var(--ink);padding:1.4rem;cursor:pointer;transition:all .2s;position:relative}
+.day-card:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--ink)}
+.day-card.complete{background:var(--ink);color:var(--paper)}
+.day-card.complete .checkmark{position:absolute;top:1rem;right:1rem;color:var(--green);font-size:1.5rem;font-weight:700}
+.day-card.today{border-color:var(--accent);border-width:3px;box-shadow:4px 4px 0 var(--accent)}
+.day-card.weekend .we-flag{position:absolute;top:-2px;right:-2px;background:var(--gold);color:var(--ink);padding:2px 8px;font-family:'JetBrains Mono',monospace;font-size:.55rem;letter-spacing:.1em;font-weight:700}
+.day-card .day-num{font-family:'JetBrains Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;opacity:.7;margin-bottom:.4rem}
+.day-card .day-title{font-family:'Fraunces',serif;font-weight:600;font-size:1.25rem;margin-bottom:.5rem}
+.day-card .day-desc{font-size:.85rem;color:#1f2a3d;margin-bottom:1rem}
+.day-card.complete .day-desc{color:#e8dcc4}
+.day-checks{display:flex;gap:.4rem;flex-wrap:wrap}
+.check-pill{padding:3px 7px;border:1px solid currentColor;font-family:'JetBrains Mono',monospace;font-size:.6rem;text-transform:uppercase;opacity:.6}
+.check-pill.done{background:var(--green);color:var(--paper);border-color:var(--green);opacity:1}
+.modal-overlay{position:fixed;inset:0;background:rgba(14,23,38,.75);z-index:100;display:none;align-items:flex-start;justify-content:center;padding:2rem;overflow-y:auto}
+.modal-overlay.open{display:flex}
+.modal{background:var(--paper);max-width:920px;width:100%;border:3px solid var(--ink);box-shadow:12px 12px 0 var(--accent);margin:2rem 0}
+.modal-header{background:var(--ink);color:var(--paper);padding:1.5rem 2rem;display:flex;justify-content:space-between;align-items:center}
+.modal-header h2{font-family:'Fraunces',serif;font-weight:400;font-size:1.6rem;line-height:1.1}
+.modal-header .day-tag{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--accent-soft);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.3rem}
+.close-btn{background:none;border:1px solid var(--paper);color:var(--paper);width:32px;height:32px;font-size:1.2rem;cursor:pointer;flex-shrink:0}
+.close-btn:hover{background:var(--accent);border-color:var(--accent)}
+.modal-body{padding:2rem}
+.section-h{font-family:'JetBrains Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);margin:1.8rem 0 .8rem;padding-bottom:.4rem;border-bottom:1px solid var(--line)}
+.section-h:first-child{margin-top:0}
+.lesson{font-size:1rem;line-height:1.7}
+.lesson p{margin-bottom:1rem}
+.lesson ul,.lesson ol{margin-left:1.4rem;margin-bottom:1rem}
+.lesson li{margin-bottom:.4rem}
+.lesson b,.lesson strong{color:var(--accent);font-weight:700}
+.lesson h3{font-family:'Fraunces',serif;font-size:1.2rem;margin:1.2rem 0 .6rem}
+.callout{background:var(--paper-soft);border-left:4px solid var(--accent);padding:1rem 1.2rem;margin:1rem 0}
+.callout .lbl{font-family:'JetBrains Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent);margin-bottom:.4rem;font-weight:700}
+.we{background:#fff;border:2px solid var(--ink);padding:1.2rem 1.4rem;margin:1rem 0;position:relative}
+.we::before{content:'WORKED EXAMPLE';position:absolute;top:-10px;left:16px;background:var(--paper);padding:0 8px;font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.15em;color:var(--green);font-weight:700}
+.we .pst{font-style:italic;font-family:'Fraunces',serif;font-size:1.05rem;margin-bottom:.8rem;padding-bottom:.6rem;border-bottom:1px dashed var(--line)}
+.we .step{display:flex;gap:.8rem;margin-bottom:.6rem;align-items:flex-start}
+.we .sn{flex-shrink:0;width:24px;height:24px;background:var(--ink);color:var(--paper);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:.75rem;font-weight:700}
+table.ftbl{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem}
+table.ftbl th,table.ftbl td{border:1px solid var(--ink);padding:.6rem .8rem;text-align:left}
+table.ftbl th{background:var(--ink);color:var(--paper);font-family:'JetBrains Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em}
+table.ftbl tr:nth-child(even){background:var(--paper-soft)}
+.video{border:2px solid var(--ink);padding:1rem 1.2rem;margin-bottom:.6rem;display:flex;justify-content:space-between;align-items:center;background:var(--paper-soft);gap:1rem}
+.video:hover{background:#e8dcc4}
+.video .vt{font-family:'Fraunces',serif;font-weight:600;font-size:1rem;margin-bottom:.2rem}
+.video .vm{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.video .wbtn{background:var(--accent);color:var(--paper);padding:.5rem .9rem;text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;font-weight:700;border:2px solid var(--ink);flex-shrink:0}
+.video .wbtn:hover{background:var(--ink)}
+.problem{background:#fdfbf6;border:1px solid var(--line);padding:1rem 1.2rem;margin-bottom:.6rem}
+.problem .pn{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--accent);font-weight:700;margin-bottom:.3rem;display:flex;justify-content:space-between}
+.problem .diff{font-size:.6rem;padding:1px 6px;background:var(--paper-soft);border:1px solid var(--line);color:var(--muted);letter-spacing:.1em}
+.problem .diff.warmup{color:var(--green);border-color:var(--green)}
+.problem .diff.standard{color:var(--gold);border-color:var(--gold)}
+.problem .diff.ap{color:var(--accent);border-color:var(--accent)}
+.problem .pt{margin-bottom:.6rem}
+.rbtn{background:var(--ink);color:var(--paper);border:none;padding:.4rem .8rem;font-family:'JetBrains Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;cursor:pointer}
+.rbtn:hover{background:var(--accent)}
+.ans{display:none;margin-top:.6rem;padding:.8rem 1rem;background:var(--ink);color:var(--paper);font-size:.9rem;line-height:1.6;border-left:4px solid var(--accent)}
+.ans.show{display:block}
+.checklist{margin-top:1.5rem}
+.checklist label{display:flex;align-items:center;gap:.7rem;padding:.7rem 1rem;border:1px solid var(--line);margin-bottom:.4rem;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em}
+.checklist input{width:18px;height:18px;accent-color:var(--accent)}
+.checklist label.checked{background:var(--ink);color:var(--paper)}
+.cbtn{width:100%;background:var(--accent);color:var(--paper);border:2px solid var(--ink);padding:1rem;font-family:'JetBrains Mono',monospace;font-size:.85rem;text-transform:uppercase;letter-spacing:.15em;font-weight:700;cursor:pointer;margin-top:1.5rem}
+.cbtn:hover{background:var(--ink)}
+.cbtn.done{background:var(--green)}
+.gen-section{max-width:1100px;margin:0 auto;padding:3rem 2rem 4rem}
+.gen-section h1{font-family:'Fraunces',serif;font-weight:400;font-size:2.8rem;margin-bottom:.5rem;letter-spacing:-.03em}
+.gen-section h1 em{color:var(--accent);font-style:italic}
+.gen-section .intro{font-size:1.05rem;max-width:700px;margin-bottom:2rem;color:#1f2a3d}
+.gen-section .meta-tag{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem}
+.frq-types{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin-bottom:3rem}
+.frq-type-card{background:var(--paper);border:2px solid var(--ink);padding:1.4rem}
+.frq-type-card .num{font-family:'JetBrains Mono',monospace;font-size:.65rem;color:var(--accent);text-transform:uppercase;letter-spacing:.15em;margin-bottom:.5rem;font-weight:700}
+.frq-type-card h3{font-family:'Fraunces',serif;font-size:1.3rem;margin-bottom:.5rem}
+.frq-type-card .calc{display:inline-block;margin-top:.5rem;background:var(--ink);color:var(--paper);padding:3px 8px;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.1em}
+.frq-type-card .calc.yes{background:var(--green)}
+.frq-type-card p{font-size:.9rem;margin:.6rem 0;color:#1f2a3d}
+.frq-type-card ul{list-style:none;padding:0;font-size:.85rem}
+.frq-type-card li{padding:4px 0 4px 18px;position:relative}
+.frq-type-card li::before{content:'>';position:absolute;left:0;color:var(--accent);font-weight:700}
+.frq-list{display:flex;flex-direction:column;gap:1rem}
+.frq-card{background:var(--paper);border:2px solid var(--ink);padding:1.4rem;cursor:pointer;transition:all .2s}
+.frq-card:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--ink)}
+.frq-card .meta{font-family:'JetBrains Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;color:var(--muted);margin-bottom:.4rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.4rem}
+.frq-card .pts{color:var(--accent);font-weight:700}
+.frq-card h3{font-family:'Fraunces',serif;font-size:1.3rem;margin-bottom:.4rem}
+.frq-card .pv{font-size:.9rem;color:#1f2a3d}
+.score-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:2rem 0}
+.score-card{background:var(--paper);border:2px solid var(--ink);padding:1.4rem}
+.score-card h3{font-family:'Fraunces',serif;font-size:1.3rem;margin-bottom:1rem}
+.score-input{width:100%;padding:.6rem .8rem;font-family:'JetBrains Mono',monospace;font-size:1.1rem;border:2px solid var(--ink);background:#fff}
+.score-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);display:block;margin-bottom:.3rem}
+.score-result{background:var(--ink);color:var(--paper);padding:2rem;text-align:center;border:3px solid var(--ink);box-shadow:8px 8px 0 var(--accent)}
+.score-result .lbl{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--accent-soft);text-transform:uppercase;letter-spacing:.15em;margin-bottom:.5rem}
+.score-result .comp{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:3rem;line-height:1;margin-bottom:.5rem}
+.score-result .ap{font-family:'Fraunces',serif;font-style:italic;font-size:2rem;color:var(--accent-soft)}
+.score-result .ap .n{color:var(--paper);font-weight:600;font-size:3.5rem;font-style:normal}
+.reset-section{text-align:center;padding:2rem;border-top:1px dashed var(--line);margin-top:2rem}
+.reset-btn{background:none;border:1px solid var(--muted);color:var(--muted);padding:.5rem 1rem;font-family:'JetBrains Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;cursor:pointer}
+.reset-btn:hover{color:var(--accent);border-color:var(--accent)}
+@media (max-width:768px){.hero{grid-template-columns:1fr;padding:2rem 1rem;gap:2rem}header{padding:1rem}.top-tab{padding:.7rem .9rem;font-size:.6rem}.unit-tabs{padding:0 1rem}.unit-tab{font-size:.62rem;padding:.5rem .7rem}.days-section,.progress-section{padding-left:1rem;padding-right:1rem}.days-grid{grid-template-columns:1fr}.modal-overlay{padding:.5rem}.modal-body{padding:1.2rem}.score-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><span class="star">*</span> AP Precalc Lockdown · <em>Cooper</em></div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em" id="cd-mini">--d to exam</div>
+</header>
+
+<div class="top-tabs">
+  <button class="top-tab active" data-view="daily">Daily Plan</button>
+  <button class="top-tab" data-view="frq">FRQ Practice</button>
+  <button class="top-tab" data-view="score">Score Tracker</button>
+  <button class="top-tab" data-view="strategy">Exam Strategy</button>
+</div>
+
+<div class="view active" id="v-daily">
+  <section class="hero">
+    <div>
+      <div class="label">22-day plan · Started 04/29 · Target: 4</div>
+      <h1>You don&rsquo;t <em>know nothing.</em><br>You just need a system.</h1>
+      <p>Three weeks. 22 days. ~95% of the AP exam packed into focused sessions. Weekdays 45-60 min. Weekends 90+ min for deep work and FRQ practice.</p>
+      <div class="target-tag">TARGET: AP SCORE <strong>4</strong> · NEED ~60% COMPOSITE</div>
+    </div>
+    <div class="cd-card">
+      <div class="ed">EXAM DAY</div>
+      <div class="date">May 21, 2026 · AM</div>
+      <div class="name">AP Precalculus</div>
+      <div class="cd-grid">
+        <div><div class="num" id="cd-d">--</div><div class="lbl">Days</div></div>
+        <div><div class="num" id="cd-h">--</div><div class="lbl">Hours</div></div>
+        <div><div class="num" id="cd-m">--</div><div class="lbl">Min</div></div>
+        <div><div class="num" id="cd-s">--</div><div class="lbl">Sec</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="progress-section">
+    <div class="progress-meta"><span style="color:var(--ink);font-weight:700">Plan Progress</span><span style="color:var(--muted)" id="ptext">0 / 22 days</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="pfill"></div></div>
+  </section>
+
+  <div class="unit-tabs">
+    <button class="unit-tab active" data-unit="all">All Days</button>
+    <button class="unit-tab" data-unit="1">Unit 1</button>
+    <button class="unit-tab" data-unit="2">Unit 2</button>
+    <button class="unit-tab" data-unit="3">Unit 3</button>
+    <button class="unit-tab" data-unit="review">Final Push</button>
+  </div>
+
+  <section class="days-section"><div id="days-container"></div></section>
+  <div class="reset-section"><button class="reset-btn" id="resetBtn">Reset all progress</button></div>
+</div>
+
+<div class="view" id="v-frq">
+  <section class="gen-section">
+    <div class="meta-tag">37.5% of your score · 4 questions · 60 minutes · 24 raw points total</div>
+    <h1>Free Response: <em>where 4s are made and lost</em>.</h1>
+    <p class="intro">Each FRQ = 6 points. To hit a 4 you typically need 14-16 raw FRQ points combined with 24+/40 MCQ. Each FRQ has a predictable structure — learn the 4 types, you know what is coming.</p>
+
+    <div class="section-h">The 4 FRQ Types (always in this order)</div>
+    <div class="frq-types">
+      <div class="frq-type-card">
+        <div class="num">FRQ 1 · 6 pts</div>
+        <h3>Function Concepts</h3>
+        <span class="calc yes">CALCULATOR</span>
+        <p>Read graphs/tables, compute average rate of change, identify function behavior (inc/dec, concavity).</p>
+        <ul><li>Show ARC quotient: (f(b) - f(a))/(b - a)</li><li>Round to 3 decimal places</li><li>Justify behavior using table values</li></ul>
+      </div>
+      <div class="frq-type-card">
+        <div class="num">FRQ 2 · 6 pts</div>
+        <h3>Modeling: Non-Periodic</h3>
+        <span class="calc yes">CALCULATOR</span>
+        <p>Build a polynomial, exponential, or log model from data. Interpret in context with units.</p>
+        <ul><li>Set up equations from data points</li><li>Use calc regression if asked</li><li>ALWAYS include units</li></ul>
+      </div>
+      <div class="frq-type-card">
+        <div class="num">FRQ 3 · 6 pts</div>
+        <h3>Modeling: Periodic</h3>
+        <span class="calc">NO CALC</span>
+        <p>Sinusoidal modeling. Find a, b, c, d in f(x) = a sin(b(x-c)) + d.</p>
+        <ul><li>Amp = (max - min)/2</li><li>Midline = (max + min)/2</li><li>b = 2pi / period</li></ul>
+      </div>
+      <div class="frq-type-card">
+        <div class="num">FRQ 4 · 6 pts</div>
+        <h3>Symbolic Manipulation</h3>
+        <span class="calc">NO CALC</span>
+        <p>Algebra-heavy. Solve log/exp equations, rewrite trig, prove identities.</p>
+        <ul><li>Use exact values (no decimals)</li><li>Show every step</li><li>Use parentheses around log args</li></ul>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="lbl">TASK VERB DECODER</div>
+      <strong>Determine / Find:</strong> Show work, give numerical answer.<br>
+      <strong>Justify / Explain:</strong> Words required. State the rule + cite the data.<br>
+      <strong>Describe:</strong> Use math vocabulary (increasing, concave up, etc).<br>
+      <strong>Construct:</strong> Build the equation/model from scratch.<br>
+      <strong>Interpret:</strong> Answer in context with units.
+    </div>
+
+    <div class="section-h">Practice FRQs (full walkthroughs)</div>
+    <div class="frq-list" id="frq-list"></div>
+  </section>
+</div>
+
+<div class="view" id="v-score">
+  <section class="gen-section">
+    <h1>Score <em>Tracker</em></h1>
+    <p class="intro">After a practice exam, plug in your raw scores and see your projected AP score. Updates live.</p>
+
+    <div class="score-grid">
+      <div class="score-card">
+        <h3>Multiple Choice</h3>
+        <span class="score-label">Correct out of 40</span>
+        <input type="number" class="score-input" id="mcq" min="0" max="40" placeholder="0">
+      </div>
+      <div class="score-card">
+        <h3>Free Response</h3>
+        <span class="score-label">Raw points out of 24</span>
+        <input type="number" class="score-input" id="frq" min="0" max="24" placeholder="0">
+      </div>
+    </div>
+
+    <div class="score-result">
+      <div class="lbl">Composite Score (out of 100)</div>
+      <div class="comp" id="comp">--</div>
+      <div class="ap">Predicted AP Score: <span class="n" id="apscore">--</span></div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--accent-soft);margin-top:1rem;letter-spacing:.1em" id="feedback"></div>
+    </div>
+
+    <table class="ftbl" style="margin-top:2rem">
+      <tr><th>AP Score</th><th>Composite Range</th><th>What it means</th></tr>
+      <tr><td><strong>5</strong></td><td>~75-100</td><td>Top tier · most colleges accept for credit</td></tr>
+      <tr><td><strong>4</strong></td><td>~60-74</td><td>Strong · widely accepted · <span style="color:var(--accent)">YOUR TARGET</span></td></tr>
+      <tr><td><strong>3</strong></td><td>~45-59</td><td>Passing · acceptable at many schools</td></tr>
+      <tr><td>2</td><td>~30-44</td><td>Possibly qualified</td></tr>
+      <tr><td>1</td><td>0-29</td><td>No recommendation</td></tr>
+    </table>
+    <p style="margin-top:1rem;font-size:.85rem;color:var(--muted)">Estimated cutoffs from 2024-2025 distributions. To hit a 4: roughly 24/40 MCQ + 14/24 FRQ.</p>
+  </section>
+</div>
+
+<div class="view" id="v-strategy">
+  <section class="gen-section">
+    <h1>Exam Day <em>Strategy</em></h1>
+    <p class="intro">Knowing the math is half the battle. Knowing exam tactics is the other half. Read this BEFORE 5/21.</p>
+
+    <div class="section-h">Pacing</div>
+    <ul style="font-size:1rem;line-height:1.8;list-style:none;padding-left:0">
+      <li><strong>MCQ Part A (no calc):</strong> 28 questions · 80 min · ~3 min each</li>
+      <li><strong>MCQ Part B (calc):</strong> 12 questions · 40 min · ~3 min each</li>
+      <li><strong>FRQ Part A (calc):</strong> 2 questions · 30 min · 15 min each</li>
+      <li><strong>FRQ Part B (no calc):</strong> 2 questions · 30 min · 15 min each</li>
+    </ul>
+
+    <div class="callout">
+      <div class="lbl">THE 60% STRATEGY (your target for a 4)</div>
+      Do not try to get every question right — that is how you panic and run out of time. Aim to NAIL ~28 MCQ confidently and grab partial credit on every FRQ part you can. Skip the hardest 2-3 MCQ if needed and come back. Never leave a blank — there is no penalty for guessing.
+    </div>
+
+    <div class="section-h">MCQ Strategy</div>
+    <ul style="font-size:1rem;line-height:1.8">
+      <li><strong>NEVER leave a blank.</strong> No penalty for wrong answers. Even random guess = 25% chance.</li>
+      <li>If stuck after 30 sec, mark and move on. Come back at the end.</li>
+      <li>For all of the following EXCEPT questions, eliminate the 3 that DO work.</li>
+      <li>For function questions, plug in test values (x=0, x=1, x=-1) to eliminate options.</li>
+      <li>Use your calculator on Part B for graphing, regression, and equation solving — do not waste time doing algebra by hand.</li>
+    </ul>
+
+    <div class="section-h">FRQ Strategy</div>
+    <ul style="font-size:1rem;line-height:1.8">
+      <li><strong>Show all work.</strong> Correct answer with no work often = 0 points. Work alone often = partial credit.</li>
+      <li>Read ALL parts before starting. Sometimes part (c) is independent of (a) — do what you can.</li>
+      <li>Box your final answers so the reader can find them.</li>
+      <li>Include UNITS on every interpretation question. Units = points.</li>
+      <li>If a part says justify: write a sentence. Do not just state the answer.</li>
+      <li>For decimals: 3 decimal places unless told otherwise.</li>
+      <li>For exact (no calc): use exact values like sqrt(3)/2, never decimal approximations.</li>
+    </ul>
+
+    <div class="section-h">Night Before</div>
+    <ul style="font-size:1rem;line-height:1.8">
+      <li>Do not cram new material — review your formula notes and unit circle for 30 min max.</li>
+      <li>Pack your bag: 2+ pencils, eraser, approved graphing calculator with FRESH BATTERIES, ID, water bottle.</li>
+      <li>Set 2 alarms. Eat a real breakfast (protein + carbs).</li>
+      <li>In bed by 10pm. Sleep beats one more hour of cramming.</li>
+    </ul>
+
+    <div class="section-h">Exam Morning</div>
+    <ul style="font-size:1rem;line-height:1.8">
+      <li>Arrive 15 min early.</li>
+      <li>Set calculator to RADIAN mode the moment you open it.</li>
+      <li>If your mind goes blank on a question, breathe, skip it, come back. Confidence comes back when you nail the next one.</li>
+      <li>Trust your prep. You have done the work. Now just execute.</li>
+    </ul>
+
+    <p style="text-align:center;margin-top:3rem;font-family:'Fraunces',serif;font-style:italic;font-size:1.4rem;color:var(--accent)">Go get it, Coop.</p>
+  </section>
+</div>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div><div class="day-tag" id="m-tag">Day 1</div><h2 id="m-title">Loading...</h2></div>
+      <button class="close-btn" id="closeBtn">x</button>
+    </div>
+    <div class="modal-body" id="m-body"></div>
+  </div>
+</div>
+
+<script>
+var DATA = JSON.parse("{\"DAYS\":[{\"n\":1,\"date\":\"Wed 4/29\",\"unit\":\"1\",\"weekend\":false,\"today\":true,\"title\":\"Polynomial Basics & End Behavior\",\"desc\":\"Foundation. What polynomials are, degree, leading coefficient, end behavior.\",\"videos\":[{\"t\":\"1.4 Polynomial Functions & Rates of Change\",\"s\":\"flippedmath\",\"m\":\"11 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+1.4+polynomial\"},{\"t\":\"1.6 Polynomial Functions & End Behavior\",\"s\":\"flippedmath\",\"m\":\"8 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+1.6+end+behavior\"}],\"lesson\":\"<h3>What is a polynomial?</h3>\\n<p>A polynomial is a sum of terms like (number) times x to a whole-number power. The exponent must be a whole number — no fractions, negatives, or roots.</p>\\n<p>YES polynomial: 3x^4 - 2x^2 + 7. NOT a polynomial: sqrt(x) (exponent is 1/2). NOT a polynomial: 1/x (exponent is -1).</p>\\n<h3>Two key terms</h3>\\n<ul><li><b>Degree</b> = highest exponent</li><li><b>Leading coefficient</b> = number in front of highest-degree term</li></ul>\\n<p>For f(x) = -2x^4 + 7x^2 - 3: degree 4, leading coef -2.</p>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">END BEHAVIOR MASTER RULE</div>\\n<b>Even degree</b> = both ends do the SAME thing.<br><b>Odd degree</b> = ends do OPPOSITE things.<br><b>Sign of leading coef</b> = which way right end goes (+ up, - down).</div>\\n<table class=\\\"ftbl\\\"><tr><th>Degree</th><th>Coef</th><th>Left end</th><th>Right end</th><th>Picture</th></tr>\\n<tr><td>Even</td><td>+</td><td>up</td><td>up</td><td>U shape</td></tr>\\n<tr><td>Even</td><td>-</td><td>down</td><td>down</td><td>upside-down U</td></tr>\\n<tr><td>Odd</td><td>+</td><td>down</td><td>up</td><td>down-left, up-right</td></tr>\\n<tr><td>Odd</td><td>-</td><td>up</td><td>down</td><td>up-left, down-right</td></tr></table>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">Describe end behavior of f(x) = -3x^5 + 2x^2 - 7.</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>Degree 5 (odd).</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>Lead coef -3 (negative).</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">3</div><div>Odd + neg = ends opposite, right end goes DOWN.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">4</div><div>As x → +infinity, f(x) → -infinity. As x → -infinity, f(x) → +infinity.</div></div></div>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">End behavior of g(x) = 4 - x^6?</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>Highest power is x^6, coef = -1.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>Degree 6 (even), lead coef negative.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">3</div><div>Even + neg = both ends DOWN. As x → ±infinity, g(x) → -infinity.</div></div></div>\",\"problems\":[{\"d\":\"warmup\",\"q\":\"Degree and leading coef of f(x) = 4x^3 - x + 2?\",\"a\":\"Degree 3, lead coef +4.\"},{\"d\":\"warmup\",\"q\":\"Degree and leading coef of g(x) = -x^6 + 5x^4?\",\"a\":\"Degree 6, lead coef -1.\"},{\"d\":\"warmup\",\"q\":\"Is f(x) = sqrt(x) + 3 a polynomial?\",\"a\":\"No. Square root means exponent of 1/2, not a whole number.\"},{\"d\":\"standard\",\"q\":\"End behavior of f(x) = 4x^3 - x + 2?\",\"a\":\"Odd degree, positive lead coef. As x → +inf, f → +inf. As x → -inf, f → -inf.\"},{\"d\":\"standard\",\"q\":\"End behavior of g(x) = -x^6 + 5x^4?\",\"a\":\"Even degree, negative lead coef. Both ends DOWN.\"},{\"d\":\"standard\",\"q\":\"End behavior of p(x) = -7x + 3x^3 - x^7?\",\"a\":\"Highest term is -x^7 (odd, neg). x → +inf, p → -inf. x → -inf, p → +inf.\"},{\"d\":\"standard\",\"q\":\"End behavior of q(x) = 5 - 2x^4?\",\"a\":\"Even + neg: both ends DOWN.\"},{\"d\":\"standard\",\"q\":\"A polynomial has both ends going to +infinity. What does that say?\",\"a\":\"Even degree AND positive leading coefficient.\"},{\"d\":\"standard\",\"q\":\"Polynomial goes UP on left, DOWN on right. What can you conclude?\",\"a\":\"Odd degree, negative leading coefficient.\"},{\"d\":\"ap\",\"q\":\"Table: f(0)=-3, f(1)=-2, f(2)=5, f(3)=22, f(4)=53. Linear, quadratic, or cubic?\",\"a\":\"1st diffs: 1, 7, 17, 31. 2nd diffs: 6, 10, 14. 3rd diffs: 4, 4 (constant). Cubic (degree 3).\"},{\"d\":\"ap\",\"q\":\"f(x) = ax^4 + bx^3 - 2x + 7 has both ends going to -infinity. What about a? About b?\",\"a\":\"a must be negative. b can be ANY value (does not affect end behavior).\"},{\"d\":\"ap\",\"q\":\"A degree-5 polynomial with positive lead coef. Describe its general shape.\",\"a\":\"Comes UP from bottom-left, wiggles with up to 4 turning points, exits UP to top-right.\"}]},{\"n\":2,\"date\":\"Thu 4/30\",\"unit\":\"1\",\"weekend\":false,\"today\":false,\"title\":\"Zeros, Multiplicity & Complex Roots\",\"desc\":\"Where graphs cross zero, how factors repeat, Fundamental Theorem of Algebra.\",\"videos\":[{\"t\":\"1.5A Polynomial Functions & Complex Zeros\",\"s\":\"flippedmath\",\"m\":\"13 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+1.5+complex+zeros\"},{\"t\":\"1.5B Even and Odd Polynomials\",\"s\":\"flippedmath\",\"m\":\"9 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+1.5B\"}],\"lesson\":\"<h3>What is a zero?</h3>\\n<p>A zero (root) is where f(x) = 0 — where graph crosses or touches x-axis. Set polynomial = 0 and factor.</p>\\n<p>f(x) = (x-2)(x+3)(x-5) has zeros at x=2, x=-3, x=5. Each factor gives one zero.</p>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">FUNDAMENTAL THEOREM OF ALGEBRA</div>\\nA polynomial of degree n has exactly <b>n complex zeros</b> (counting multiplicity). Real zeros show as x-intercepts; complex zeros do not.</div>\\n<h3>Multiplicity</h3>\\n<p>How many times a factor repeats. (x-2)^3 means x=2 has multiplicity 3.</p>\\n<ul><li><b>Odd multiplicity</b> → graph CROSSES x-axis</li><li><b>Even multiplicity</b> → graph TOUCHES (bounces off)</li></ul>\\n<h3>Complex zeros come in pairs</h3>\\n<p>If f has real coefficients and 2+3i is a zero, then 2-3i MUST also be a zero. Conjugates always pair up.</p>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">Find all zeros of f(x) = x^2(x-3)^2(x+1) and describe behavior.</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>Set each factor = 0: x=0, x=3, x=-1.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>x=0 mult 2 (touches). x=3 mult 2 (touches). x=-1 mult 1 (crosses).</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">3</div><div>Total degree = 2+2+1 = 5. Total complex zeros = 5.</div></div></div>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">Degree-4 polynomial has zeros x=2 (mult 1) and x=1+i. Find the other zeros.</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>Conjugate rule: 1-i must also be a zero.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>So far: 2, 1+i, 1-i. Need 1 more zero (degree 4 total).</div></div></div>\",\"problems\":[{\"d\":\"warmup\",\"q\":\"Zeros of f(x) = (x-1)(x+4)(x-3)?\",\"a\":\"x = 1, -4, 3. All multiplicity 1.\"},{\"d\":\"warmup\",\"q\":\"Total complex zeros of a degree-7 polynomial?\",\"a\":\"Exactly 7 (FTA).\"},{\"d\":\"warmup\",\"q\":\"For (x+2)^4, what does the graph do at x = -2?\",\"a\":\"Even multiplicity → touches and bounces off.\"},{\"d\":\"standard\",\"q\":\"Zeros and multiplicities of f(x) = x(x-2)^3(x+5)^2.\",\"a\":\"x=0 mult 1 (crosses), x=2 mult 3 (crosses with flattening), x=-5 mult 2 (touches). Degree 6.\"},{\"d\":\"standard\",\"q\":\"Degree-5 polynomial has zeros 1, -2, and 3+2i. What other zero(s) MUST it have?\",\"a\":\"3-2i (conjugate). Plus one more real zero (need 5 total).\"},{\"d\":\"standard\",\"q\":\"Lowest-degree polynomial with zeros 0, 1, -2?\",\"a\":\"f(x) = x(x-1)(x+2). Degree 3.\"},{\"d\":\"standard\",\"q\":\"Lowest-degree polynomial with zeros 4 and i (real coefs)?\",\"a\":\"i forces -i. f(x) = (x-4)(x-i)(x+i) = (x-4)(x^2+1). Degree 3.\"},{\"d\":\"standard\",\"q\":\"f(x) crosses at x=1, bounces at x=-3. Lowest possible degree?\",\"a\":\"f(x) = (x-1)(x+3)^2. Degree 3.\"},{\"d\":\"ap\",\"q\":\"f has zeros x=-1 (mult 2), x=2, x=3. Also f(0)=12. Write f(x).\",\"a\":\"Form: a(x+1)^2(x-2)(x-3). f(0) = a(1)(-2)(-3) = 6a = 12 → a=2. f(x) = 2(x+1)^2(x-2)(x-3).\"},{\"d\":\"ap\",\"q\":\"Degree-4 poly has exactly 2 real zeros. What about other zeros?\",\"a\":\"Must have 2 complex (conjugate pair). FTA: degree 4 = 4 total zeros.\"},{\"d\":\"ap\",\"q\":\"Describe behavior of f(x) = -(x-1)^3(x+2)^2.\",\"a\":\"Degree 5, lead coef -1. End behavior: up-left, down-right. At x=1 (mult 3): crosses with flattening. At x=-2 (mult 2): touches and bounces.\"}]},{\"n\":3,\"date\":\"Fri 5/1\",\"unit\":\"1\",\"weekend\":false,\"today\":false,\"title\":\"Polynomial Long Division\",\"desc\":\"Synthetic is NOT on AP exam. Long division IS. Master it for FRQ #4.\",\"videos\":[{\"t\":\"1.11A Equivalent Polynomial Representations\",\"s\":\"flippedmath\",\"m\":\"12 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+1.11+polynomial\"},{\"t\":\"Polynomial Long Division (Prof Dave)\",\"s\":\"YouTube\",\"m\":\"8 min\",\"u\":\"https://www.youtube.com/watch?v=FXgV9ySNusc\"}],\"lesson\":\"<h3>The procedure</h3>\\n<ol><li>Standard form (high to low degree). <b>Insert 0x^n for missing powers.</b></li>\\n<li>Divide leading term of dividend by leading term of divisor → first quotient term.</li>\\n<li>Multiply that quotient term by the full divisor.</li>\\n<li>Subtract from dividend.</li>\\n<li>Bring down next term, repeat until remainder degree is less than divisor degree.</li>\\n<li>Final form: <b>quotient + remainder/divisor</b></li></ol>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">REMAINDER THEOREM</div>The remainder when dividing f(x) by (x-c) equals f(c). If f(c) = 0, then (x-c) IS a factor.</div>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">Divide (2x^3 - 3x^2 + 4x - 1) by (x - 2).</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>Already standard form. 2x^3 ÷ x = 2x^2.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>2x^2(x-2) = 2x^3 - 4x^2. Subtract: -3x^2 - (-4x^2) = x^2. Bring down 4x: x^2 + 4x.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">3</div><div>x^2 ÷ x = x. x(x-2) = x^2 - 2x. Subtract: 4x - (-2x) = 6x. Bring down -1: 6x - 1.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">4</div><div>6x ÷ x = 6. 6(x-2) = 6x - 12. Subtract: -1 - (-12) = 11.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">5</div><div>Answer: 2x^2 + x + 6 + 11/(x-2)</div></div></div>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">Is (x+1) a factor of f(x) = x^3 + 2x^2 - 5x - 6?</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>(x+1) means c = -1. Compute f(-1).</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>f(-1) = -1 + 2 + 5 - 6 = 0.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">3</div><div>Remainder = 0, so YES, (x+1) is a factor.</div></div></div>\",\"problems\":[{\"d\":\"warmup\",\"q\":\"Remainder when f(x) = x^2 + 3x - 4 is divided by (x-2)?\",\"a\":\"f(2) = 4 + 6 - 4 = 6.\"},{\"d\":\"warmup\",\"q\":\"Is (x-1) a factor of f(x) = x^3 - 1?\",\"a\":\"f(1) = 0. Yes.\"},{\"d\":\"warmup\",\"q\":\"What if dividend is missing the x^2 term?\",\"a\":\"Insert 0x^2 as a placeholder.\"},{\"d\":\"standard\",\"q\":\"Divide (x^3 - 4x^2 + 6x - 4) by (x - 2).\",\"a\":\"Quotient x^2 - 2x + 2, remainder 0.\"},{\"d\":\"standard\",\"q\":\"Divide (2x^3 + 3x - 5) by (x - 1). Mind the missing term!\",\"a\":\"Rewrite as 2x^3 + 0x^2 + 3x - 5. Quotient 2x^2 + 2x + 5, remainder 0.\"},{\"d\":\"standard\",\"q\":\"Divide (x^4 - 16) by (x - 2).\",\"a\":\"Insert zeros for missing terms. Quotient x^3 + 2x^2 + 4x + 8, remainder 0.\"},{\"d\":\"standard\",\"q\":\"Remainder when f(x) = x^4 - 3x^2 + 2x + 1 divided by (x+2)?\",\"a\":\"f(-2) = 16 - 12 - 4 + 1 = 1.\"},{\"d\":\"standard\",\"q\":\"f(x) ÷ (x+3) gives quotient 2x^2 - x + 5 and remainder -2. Find f(x).\",\"a\":\"f(x) = (x+3)(2x^2 - x + 5) - 2 = 2x^3 + 5x^2 + 2x + 13.\"},{\"d\":\"ap\",\"q\":\"f(x) = x^3 - 6x^2 + 11x - 6 has a zero at x=1. Use long division to fully factor.\",\"a\":\"Divide by (x-1): quotient x^2 - 5x + 6 = (x-2)(x-3). f(x) = (x-1)(x-2)(x-3). Zeros 1, 2, 3.\"},{\"d\":\"ap\",\"q\":\"f(x) = ax^3 + 4x^2 - x + 2 divided by (x-1) gives remainder 7. Find a.\",\"a\":\"f(1) = a + 4 - 1 + 2 = a + 5 = 7. So a = 2.\"},{\"d\":\"ap\",\"q\":\"Divide (3x^3 + 2x - 5) by (x^2 + 1).\",\"a\":\"Insert: 3x^3 + 0x^2 + 2x - 5. Quotient 3x. 3x(x^2+1) = 3x^3 + 3x. Subtract: 0x^2 + (2x - 3x) = -x. Bring down -5. Now -x - 5 (degree less than 2, stop). Answer: 3x + (-x-5)/(x^2+1).\"}]},{\"n\":4,\"date\":\"Sat 5/2\",\"unit\":\"1\",\"weekend\":true,\"today\":false,\"title\":\"Rational Functions & Asymptotes\",\"desc\":\"WEEKEND: VAs, HAs, slants, holes. Then practice your first FRQ.\",\"videos\":[{\"t\":\"1.7 Rational Functions & End Behavior\",\"s\":\"flippedmath\",\"m\":\"14 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+1.7+rational\"},{\"t\":\"1.8 Rational Functions & Zeros\",\"s\":\"flippedmath\",\"m\":\"10 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+1.8+rational+zeros\"},{\"t\":\"1.9-1.10 Vertical Asymptotes & Holes\",\"s\":\"flippedmath\",\"m\":\"15 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+1.9+vertical+asymptotes\"}],\"lesson\":\"<h3>Rational function</h3><p>f(x) = p(x)/q(x), where q(x) is not 0.</p>\\n<h3>Vertical asymptotes</h3><p>Where denom = 0 AND that factor does not cancel. If a factor cancels, that is a HOLE.</p>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">HORIZONTAL ASYMPTOTE RULES</div>\\nn = degree of numerator, d = degree of denominator.<br>\\n• <b>n less than d</b> → HA at y = 0<br>• <b>n equals d</b> → HA at y = (lead num)/(lead denom)<br>• <b>n greater than d</b> → NO HA (slant if n = d+1)</div>\\n<h3>Slant asymptote</h3><p>When n = d+1, do polynomial long division. Quotient (ignore remainder) IS the slant line.</p>\\n<h3>Holes</h3><p>Cancel matching factors. Hole at the x-value of the canceled factor. y-coord = simplified function evaluated there.</p>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">Find ALL features of f(x) = (x^2 - 4)/(x^2 - 5x + 6).</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>Factor: (x-2)(x+2) / [(x-2)(x-3)].</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>(x-2) cancels → HOLE at x=2. Plug into simplified (x+2)/(x-3): 4/(-1) = -4. Hole at (2, -4).</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">3</div><div>After cancel: VA at x=3.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">4</div><div>Original degrees both 2 → HA at 1/1 = 1.</div></div></div>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">Slant of f(x) = (x^2 - 4)/(x + 1)?</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>n=2, d=1, n = d+1. Slant exists.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>Long divide: x^2 + 0x - 4 by (x+1). Quotient x-1, remainder -3.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">3</div><div>Slant: y = x - 1.</div></div></div>\",\"problems\":[{\"d\":\"warmup\",\"q\":\"VA of f(x) = 1/(x-5)?\",\"a\":\"x = 5.\"},{\"d\":\"warmup\",\"q\":\"HA of f(x) = 3/(x^2 + 1)?\",\"a\":\"y = 0 (n less than d).\"},{\"d\":\"warmup\",\"q\":\"HA of f(x) = 5x^2 / (2x^2 - 3)?\",\"a\":\"y = 5/2 (n equals d).\"},{\"d\":\"standard\",\"q\":\"VA and HA of f(x) = (2x+1)/(x-3)?\",\"a\":\"VA at x=3. HA at y=2.\"},{\"d\":\"standard\",\"q\":\"HA of f(x) = (x^2 + 1) / (x^3 - x)?\",\"a\":\"y = 0.\"},{\"d\":\"standard\",\"q\":\"Slant of f(x) = (x^2 + 3x - 1)/(x - 2)?\",\"a\":\"Long div: quotient x+5, remainder 9. Slant y = x+5.\"},{\"d\":\"standard\",\"q\":\"Holes in f(x) = (x-4)(x+2) / [(x-4)(x-1)]?\",\"a\":\"Hole at x=4. Simplified (x+2)/(x-1) at x=4: 6/3 = 2. Hole (4, 2). VA at x=1.\"},{\"d\":\"standard\",\"q\":\"Zeros of f(x) = (x^2 - 9)/(x + 2)?\",\"a\":\"Numerator = 0: x = ±3.\"},{\"d\":\"standard\",\"q\":\"ALL features of f(x) = (x-1)/(x^2 - 1)?\",\"a\":\"(x-1)/[(x-1)(x+1)]. Hole at x=1, simpl 1/(x+1) at x=1: 1/2. Hole (1, 1/2). VA at x=-1. HA y=0.\"},{\"d\":\"ap\",\"q\":\"ALL features of f(x) = (2x^2 - 8)/(x^2 - 5x + 6)?\",\"a\":\"Factor: 2(x-2)(x+2) / [(x-2)(x-3)]. Hole at x=2: simpl 2(x+2)/(x-3) at 2: 8/(-1) = -8. Hole (2, -8). VA at x=3. Zero from simpl: x=-2. HA y=2.\"},{\"d\":\"ap\",\"q\":\"Build a rational function with VA at x=2, HA at y=3, zero at x=-1.\",\"a\":\"f(x) = 3(x+1)/(x-2) is one valid answer.\"},{\"d\":\"ap\",\"q\":\"As x → +infinity, what does f(x) = (4x^3 + 2x)/(x^2 - 1) approach?\",\"a\":\"n greater than d, no HA. n = d+1, so SLANT. Long div: quotient 4x. As x → +inf, f → +inf along y = 4x.\"}]},{\"n\":5,\"date\":\"Sun 5/3\",\"unit\":\"1\",\"weekend\":true,\"today\":false,\"title\":\"Transformations & Rates of Change\",\"desc\":\"WEEKEND: Function shifts/stretches, ARC, concavity. FRQ #1 territory.\",\"videos\":[{\"t\":\"1.12 Transformations of Functions\",\"s\":\"flippedmath\",\"m\":\"16 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+1.12+transformations\"},{\"t\":\"1.2 Rates of Change\",\"s\":\"flippedmath\",\"m\":\"11 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+1.2+rates+of+change\"},{\"t\":\"1.3 Linear & Quadratic Rates of Change\",\"s\":\"flippedmath\",\"m\":\"13 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+1.3\"}],\"lesson\":\"<h3>Transformations: g(x) = a · f(b(x - h)) + k</h3>\\n<table class=\\\"ftbl\\\"><tr><th>Param</th><th>Effect</th><th>Direction</th></tr>\\n<tr><td>k</td><td>Vertical shift</td><td>up if k positive, down if k negative</td></tr>\\n<tr><td>h</td><td>Horizontal shift</td><td>RIGHT if h positive, LEFT if h negative (opposite!)</td></tr>\\n<tr><td>a</td><td>Vert stretch/reflect</td><td>|a|>1 stretch, a less than 0 flips over x-axis</td></tr>\\n<tr><td>b</td><td>Horiz stretch/reflect</td><td>|b|>1 COMPRESSES, b less than 0 flips over y-axis</td></tr></table>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">INSIDE IS OPPOSITE</div>f(x-3) shifts RIGHT 3, not left. f(2x) compresses by 1/2 horizontally, not stretches.</div>\\n<h3>Average Rate of Change</h3>\\n<p style=\\\"text-align:center;font-size:1.2rem;background:var(--paper-soft);padding:.6rem\\\">ARC = [f(b) - f(a)] / (b - a)</p>\\n<p>Slope between two points. AP exam tests this every year.</p>\\n<h3>Concavity from rates</h3>\\n<ul><li>Rates increasing → concave UP</li><li>Rates decreasing → concave DOWN</li><li>Concavity changes → point of inflection</li></ul>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">Point (4, 7) is on f(x). Find the corresponding point on g(x) = f(x-2) + 5.</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>x-2 inside → shift RIGHT 2.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>+5 outside → shift UP 5.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">3</div><div>(4+2, 7+5) = (6, 12).</div></div></div>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">ARC of f(x) = x^2 - 3x from x=1 to x=4.</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>f(4) = 16 - 12 = 4. f(1) = 1 - 3 = -2.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>ARC = (4 - (-2))/(4 - 1) = 6/3 = 2.</div></div></div>\",\"problems\":[{\"d\":\"warmup\",\"q\":\"Describe g(x) = f(x) + 4.\",\"a\":\"Shift up 4.\"},{\"d\":\"warmup\",\"q\":\"Describe g(x) = -f(x).\",\"a\":\"Reflection over x-axis.\"},{\"d\":\"warmup\",\"q\":\"Describe g(x) = f(x - 5).\",\"a\":\"Shift RIGHT 5.\"},{\"d\":\"standard\",\"q\":\"Describe g(x) = -2f(x - 4) + 3.\",\"a\":\"Reflect over x-axis, vertical stretch by 2, right 4, up 3.\"},{\"d\":\"standard\",\"q\":\"Describe g(x) = f(3x) - 5.\",\"a\":\"Horizontal compression by factor of 1/3, then down 5.\"},{\"d\":\"standard\",\"q\":\"f(x) = x^2. Equation for: left 6, up 2, reflect over x-axis?\",\"a\":\"g(x) = -(x+6)^2 + 2.\"},{\"d\":\"standard\",\"q\":\"ARC of f(x) = 2x^2 + 1 from x=0 to x=3.\",\"a\":\"f(3) = 19, f(0) = 1. ARC = 18/3 = 6.\"},{\"d\":\"standard\",\"q\":\"f(1)=2, f(2)=5, f(3)=10, f(4)=17. Concave up or down?\",\"a\":\"Rates 3, 5, 7 — increasing. Concave UP.\"},{\"d\":\"standard\",\"q\":\"f(0)=1, f(1)=4, f(2)=5, f(3)=4. Concavity?\",\"a\":\"Rates 3, 1, -1 — decreasing. Concave DOWN.\"},{\"d\":\"ap\",\"q\":\"f(0)=10, f(2)=14, f(4)=14, f(6)=10. (a) ARC from 0 to 6? (b) Concavity?\",\"a\":\"(a) (10-10)/6 = 0. (b) Subrates: 2, 0, -2 — decreasing. Concave DOWN.\"},{\"d\":\"ap\",\"q\":\"f(x) = x^2, g(x) = 2f(x-1) - 3. Find g(4).\",\"a\":\"g(4) = 2 · f(3) - 3 = 2 · 9 - 3 = 15.\"},{\"d\":\"ap\",\"q\":\"Polynomial of degree 4. Maximum points of inflection?\",\"a\":\"For degree n, max is n - 2. So 2.\"}]},{\"n\":6,\"date\":\"Mon 5/4\",\"unit\":\"1\",\"weekend\":false,\"today\":false,\"title\":\"Polynomial & Rational Inequalities\",\"desc\":\"Solve x^2 - 4 > 0 etc using sign charts. AP loves this.\",\"videos\":[{\"t\":\"Polynomial Inequalities (Sign Chart Method)\",\"s\":\"YouTube\",\"m\":\"12 min\",\"u\":\"https://www.youtube.com/results?search_query=polynomial+inequality+sign+chart+method\"}],\"lesson\":\"<h3>Sign chart procedure</h3>\\n<ol><li>Move everything to one side, set vs 0.</li><li>Factor completely.</li>\\n<li>Find <b>critical points</b>: zeros of numerator AND denominator.</li>\\n<li>Plot on number line. They divide it into intervals.</li>\\n<li>Test a value in each interval. Determine sign.</li>\\n<li>Pick intervals matching the inequality.</li></ol>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">ENDPOINT RULES</div>\\nFor ≥ or ≤: include numerator zeros (closed dot, brackets).<br>\\nFor > or <: exclude all critical points (open dot, parens).<br>\\nDenominator zeros are <b>NEVER</b> included.</div>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">Solve x^2 - 5x + 6 ≤ 0.</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>Factor: (x-2)(x-3) ≤ 0.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>Critical: 2, 3. Test x=0: (-)(-) = +. x=2.5: (+)(-) = -. x=4: (+)(+) = +.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">3</div><div>Want ≤ 0. Negative on (2, 3). Include endpoints.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">4</div><div>Solution: [2, 3].</div></div></div>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">Solve (x+1)/(x-3) ≥ 0.</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>Critical: x=-1 (num), x=3 (denom).</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>Test: x=-2: -/- = +. x=0: +/- = -. x=4: +/+ = +.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">3</div><div>Want ≥ 0. Positive on (-inf, -1) and (3, inf). Include x=-1 (num zero). Exclude x=3 (denom).</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">4</div><div>Solution: (-inf, -1] U (3, inf).</div></div></div>\",\"problems\":[{\"d\":\"warmup\",\"q\":\"Solve x^2 > 9.\",\"a\":\"(x-3)(x+3) > 0. Critical ±3. Solution: (-inf, -3) U (3, inf).\"},{\"d\":\"warmup\",\"q\":\"Solve (x-1)(x+2) ≤ 0.\",\"a\":\"Negative between. Solution: [-2, 1].\"},{\"d\":\"standard\",\"q\":\"Solve x^2 - 4x + 3 < 0.\",\"a\":\"(x-1)(x-3) < 0. Negative between. (1, 3).\"},{\"d\":\"standard\",\"q\":\"Solve x^3 - 4x ≥ 0.\",\"a\":\"x(x-2)(x+2) ≥ 0. Critical 0, ±2. Test signs. Solution: [-2, 0] U [2, inf).\"},{\"d\":\"standard\",\"q\":\"Solve (x-2)/(x+1) > 0.\",\"a\":\"Critical 2, -1. Solution: (-inf, -1) U (2, inf).\"},{\"d\":\"standard\",\"q\":\"Solve (x^2 - 1)/x ≤ 0.\",\"a\":\"(x-1)(x+1)/x. Critical ±1, 0. Solution: (-inf, -1] U (0, 1].\"},{\"d\":\"ap\",\"q\":\"f(x) = (x-1)(x+3)(x-4)^2. On what interval(s) is f(x) > 0?\",\"a\":\"Even mult at x=4 → no sign change. Solution: (-inf, -3) U (1, 4) U (4, inf).\"},{\"d\":\"ap\",\"q\":\"For what x is (x^2 - 9)/(x^2 - 4) ≥ 0?\",\"a\":\"Factor (x-3)(x+3) over (x-2)(x+2). Critical: ±3 (num), ±2 (denom). Solution: (-inf, -3] U (-2, 2) U [3, inf).\"}]},{\"n\":7,\"date\":\"Tue 5/5\",\"unit\":\"1\",\"weekend\":false,\"today\":false,\"title\":\"UNIT 1 REVIEW + Practice FRQ\",\"desc\":\"Mixed Days 1-6 + your first AP-style FRQ. NO NOTES.\",\"videos\":[{\"t\":\"AP Precalc Unit 1 Cram\",\"s\":\"Bryan Passwater\",\"m\":\"45 min\",\"u\":\"https://www.youtube.com/watch?v=u43snOQ5Nms\"}],\"lesson\":\"<p>Watch full Unit 1 review FIRST. Then 30-min timed quiz on these mixed problems.</p>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">SELF-TEST RULE</div>If less than 7/10, redo the day you struggled with. Do not move on weak — Units 2 and 3 build on this.</div>\\n<h3>FRQ Practice</h3><p>Go to FRQ Practice tab → Function Concepts practice. 15 min limit.</p>\",\"problems\":[{\"d\":\"standard\",\"q\":\"End behavior of h(x) = -3x^4 + 2x^2 - x + 8?\",\"a\":\"Even + neg: both ends DOWN.\"},{\"d\":\"standard\",\"q\":\"Zeros and multiplicities of f(x) = x^2(x-3)^3(x+1).\",\"a\":\"x=0 mult 2, x=3 mult 3, x=-1 mult 1. Degree 6.\"},{\"d\":\"standard\",\"q\":\"Divide (x^3 + 2x^2 - 5) by (x + 1).\",\"a\":\"Insert 0x. Quotient x^2 + x - 1, remainder -4.\"},{\"d\":\"standard\",\"q\":\"Asymptotes of f(x) = (3x^2 - 1)/(x^2 + 4)?\",\"a\":\"HA y=3. NO VA (denom never 0).\"},{\"d\":\"standard\",\"q\":\"ARC of f(x) = 2^x from x=0 to x=3?\",\"a\":\"f(3)=8, f(0)=1. ARC = 7/3.\"},{\"d\":\"standard\",\"q\":\"Solve x^2 - 5x ≥ 0.\",\"a\":\"x(x-5) ≥ 0. Solution: (-inf, 0] U [5, inf).\"},{\"d\":\"standard\",\"q\":\"Remainder when f(x) = 2x^3 - x^2 + 3x - 1 divided by (x-2)?\",\"a\":\"f(2) = 16 - 4 + 6 - 1 = 17.\"},{\"d\":\"standard\",\"q\":\"Hole in f(x) = (x^2 - 1)/(x - 1)?\",\"a\":\"Hole at x=1, y=2. Hole (1, 2).\"},{\"d\":\"ap\",\"q\":\"f has zeros only at x=-2 (mult 1), x=3 (mult 2). f(0) = -18. Find f(x).\",\"a\":\"a(x+2)(x-3)^2. f(0) = a(2)(9) = 18a = -18 → a=-1. f(x) = -(x+2)(x-3)^2.\"},{\"d\":\"ap\",\"q\":\"For what intervals is f(x) = (x-2)/(x+3) negative?\",\"a\":\"Critical x=2, x=-3. Negative on (-3, 2).\"}]},{\"n\":8,\"date\":\"Wed 5/6\",\"unit\":\"2\",\"weekend\":false,\"today\":false,\"title\":\"Sequences (Arithmetic & Geometric)\",\"desc\":\"Bridge from algebra to exponentials.\",\"videos\":[{\"t\":\"2.1 Arithmetic & Geometric Sequences\",\"s\":\"flippedmath\",\"m\":\"12 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+2.1+sequences\"},{\"t\":\"2.2 Linear vs Exponential\",\"s\":\"flippedmath\",\"m\":\"10 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+2.2\"}],\"lesson\":\"<h3>Arithmetic (linear)</h3><p>Add a fixed d each time. a_n = a_1 + (n-1)d.</p>\\n<p>3, 7, 11, 15... d=4. a_n = 4n - 1.</p>\\n<h3>Geometric (exponential)</h3><p>Multiply by a fixed r. a_n = a_1 · r^(n-1).</p>\\n<p>2, 6, 18, 54... r=3. a_n = 2 · 3^(n-1).</p>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">BIG CONNECTION</div>Arithmetic = Linear function. Geometric = Exponential function. Linear = equal CHANGES. Exponential = equal RATIOS.</div>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">Geometric a_1 = 4, a_4 = 32. Find r and a_10.</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>a_4 = a_1 · r^3: 32 = 4r^3, r^3 = 8, r = 2.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>a_10 = 4 · 2^9 = 2048.</div></div></div>\",\"problems\":[{\"d\":\"warmup\",\"q\":\"a_10 for arithmetic 5, 9, 13...\",\"a\":\"d=4. 5 + 9(4) = 41.\"},{\"d\":\"warmup\",\"q\":\"a_6 for geometric 4, 12, 36...\",\"a\":\"r=3. 4 · 3^5 = 972.\"},{\"d\":\"warmup\",\"q\":\"Is the set (1,2),(2,6),(3,18) arithmetic or geometric?\",\"a\":\"Ratios constant 3. Geometric.\"},{\"d\":\"standard\",\"q\":\"Formula for: 100, 90, 80, 70...\",\"a\":\"d=-10. a_n = -10n + 110.\"},{\"d\":\"standard\",\"q\":\"r for 64, 16, 4, 1...\",\"a\":\"r = 1/4.\"},{\"d\":\"standard\",\"q\":\"Arithmetic with a_3 = 7, a_8 = 22. Find a_1 and d.\",\"a\":\"5d = 15, d = 3. a_1 = 7 - 2(3) = 1.\"},{\"d\":\"standard\",\"q\":\"Geometric a_2 = 6, a_5 = 162. Find a_1 and r.\",\"a\":\"r^3 = 27, r = 3. a_1 = 6/3 = 2.\"},{\"d\":\"ap\",\"q\":\"f(0)=2, f(1)=6, f(2)=18, f(3)=54. Linear or exponential? Write model.\",\"a\":\"Constant ratio 3. Exponential. f(x) = 2 · 3^x.\"},{\"d\":\"ap\",\"q\":\"Geometric a_1 = 100, decreases 20%/term. (a) r? (b) a_5? (c) Reaches 0?\",\"a\":\"(a) r = 0.8. (b) 100 · (0.8)^4 ≈ 40.96. (c) Never (approaches 0).\"},{\"d\":\"ap\",\"q\":\"Arithmetic a_1 = 50, d = -3. When first negative?\",\"a\":\"53 - 3n less than 0 → n greater than 17.67. n = 18.\"}]},{\"n\":9,\"date\":\"Thu 5/7\",\"unit\":\"2\",\"weekend\":false,\"today\":false,\"title\":\"Exponential Functions & Modeling\",\"desc\":\"f(x) = a · b^x. Growth, decay, compound interest, half-life.\",\"videos\":[{\"t\":\"2.3 Exponential Functions\",\"s\":\"flippedmath\",\"m\":\"11 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+2.3+exponential\"},{\"t\":\"2.5 Exponential Modeling\",\"s\":\"flippedmath\",\"m\":\"14 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+2.5+modeling\"}],\"lesson\":\"<h3>Form: f(x) = a · b^x</h3>\\n<ul><li>a = initial value (when x=0)</li><li>b = growth/decay factor</li>\\n<li>b greater than 1 → growth. 0 less than b less than 1 → decay.</li></ul>\\n<h3>Rate to factor</h3>\\n<ul><li>Growth rate r: b = 1+r. (5% growth: b=1.05)</li>\\n<li>Decay rate r: b = 1-r. (8% decay: b=0.92)</li></ul>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">COMPOUND INTEREST</div>\\nA = P(1 + r/n)^(nt) for n compoundings/year.<br>Continuous: A = Pe^(rt)</div>\\n<h3>Half-life / doubling</h3>\\n<p>Half-life h: A(t) = A_0 · (1/2)^(t/h). Doubling d: A(t) = A_0 · 2^(t/d).</p>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">Bacteria starts at 200, doubles hourly. After 5 hours?</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>P(t) = 200 · 2^t.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>P(5) = 200 · 32 = 6400.</div></div></div>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">$1000 at 4% APR, monthly compound, 10 years.</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>A = 1000(1 + 0.04/12)^120.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>≈ $1490.83.</div></div></div>\",\"problems\":[{\"d\":\"warmup\",\"q\":\"a, b in f(x) = 5 · 2^x. Growth or decay?\",\"a\":\"a=5, b=2. Growth.\"},{\"d\":\"warmup\",\"q\":\"f(x) = 100 · (0.85)^x. Growth or decay?\",\"a\":\"Decay (15%/unit).\"},{\"d\":\"warmup\",\"q\":\"8% growth → b = ?\",\"a\":\"1.08.\"},{\"d\":\"standard\",\"q\":\"Car worth $30k depreciates 10%/yr. After 5 years?\",\"a\":\"30000 · (0.9)^5 ≈ $17,715.\"},{\"d\":\"standard\",\"q\":\"100mg, half-life 12 hours. After 36 hours?\",\"a\":\"100 · (1/2)^3 = 12.5 mg.\"},{\"d\":\"standard\",\"q\":\"Population starts 500, triples every 4 years. Model?\",\"a\":\"P(t) = 500 · 3^(t/4).\"},{\"d\":\"standard\",\"q\":\"Solve 2(3)^t = 54.\",\"a\":\"3^t = 27 = 3^3. t = 3.\"},{\"d\":\"standard\",\"q\":\"$2000 continuously at 5%, 8 years?\",\"a\":\"2000 · e^0.4 ≈ $2983.65.\"},{\"d\":\"ap\",\"q\":\"P(t) = 50 · (1.4)^t. (a) P(0)? (b) P(5)? (c) When P greater than 1000?\",\"a\":\"(a) 50. (b) ≈ 268.9. (c) ln(20)/ln(1.4) ≈ 8.91 hours.\"},{\"d\":\"ap\",\"q\":\"Half-life 5.3 yr. Start 80g. When 10g remain?\",\"a\":\"80 · (1/2)^(t/5.3) = 10. (1/2)^(t/5.3) = 1/8. t/5.3 = 3. t = 15.9 yr.\"},{\"d\":\"ap\",\"q\":\"$5000 doubles in 12 years continuously. Find r.\",\"a\":\"10000 = 5000 · e^(12r). r = ln(2)/12 ≈ 5.78%.\"}]},{\"n\":10,\"date\":\"Fri 5/8\",\"unit\":\"2\",\"weekend\":false,\"today\":false,\"title\":\"Logarithms — The Inverse\",\"desc\":\"A log just asks: what exponent do I need? That is the entire game.\",\"videos\":[{\"t\":\"2.9 Logarithmic Expressions\",\"s\":\"flippedmath\",\"m\":\"11 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+2.9+logarithmic\"},{\"t\":\"2.11 Logarithmic Functions\",\"s\":\"flippedmath\",\"m\":\"12 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+2.11+logarithmic\"}],\"lesson\":\"<h3>The single most important fact</h3>\\n<p style=\\\"text-align:center;font-size:1.3rem;background:var(--ink);color:var(--paper);padding:1rem\\\">log_b(x) = y if and only if b^y = x</p>\\n<p>That is it. A log is an exponent in disguise.</p>\\n<h3>Examples</h3>\\n<ul><li>log_2(8) = 3 because 2^3 = 8</li><li>log_10(100) = 2</li>\\n<li>log_5(1) = 0 (always: log_b(1) = 0)</li><li>log_3(1/9) = -2</li></ul>\\n<h3>Special logs</h3>\\n<ul><li><b>ln</b> = log base e</li><li><b>log</b> (no base) = log base 10</li></ul>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">FIVE LOG PROPERTIES</div>\\n1. log_b(AB) = log_b(A) + log_b(B)<br>\\n2. log_b(A/B) = log_b(A) - log_b(B)<br>\\n3. log_b(A^n) = n · log_b(A)<br>\\n4. log_b(b) = 1, log_b(1) = 0<br>\\n5. Change of base: log_b(x) = ln(x)/ln(b)</div>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">log_4(64) without calc.</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>4 to what power = 64?</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>4^3 = 64. So 3.</div></div></div>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">Expand log(x^3 · y^2 / z).</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>Quotient: log(x^3 y^2) - log(z).</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>Product: log(x^3) + log(y^2) - log(z).</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">3</div><div>Exponents: 3 log(x) + 2 log(y) - log(z).</div></div></div>\",\"problems\":[{\"d\":\"warmup\",\"q\":\"log_3(81)?\",\"a\":\"4.\"},{\"d\":\"warmup\",\"q\":\"log_4(1/16)?\",\"a\":\"-2.\"},{\"d\":\"warmup\",\"q\":\"log_5(125)?\",\"a\":\"3.\"},{\"d\":\"warmup\",\"q\":\"ln(1)?\",\"a\":\"0.\"},{\"d\":\"warmup\",\"q\":\"ln(e)?\",\"a\":\"1.\"},{\"d\":\"standard\",\"q\":\"Expand log(x^3 · y / z^2).\",\"a\":\"3 log(x) + log(y) - 2 log(z).\"},{\"d\":\"standard\",\"q\":\"Condense 2 ln(x) - ln(y) + ln(5).\",\"a\":\"ln(5x^2 / y).\"},{\"d\":\"standard\",\"q\":\"log_2(50) (calc)?\",\"a\":\"ln(50)/ln(2) ≈ 5.644.\"},{\"d\":\"standard\",\"q\":\"Convert 3^4 = 81 to log form.\",\"a\":\"log_3(81) = 4.\"},{\"d\":\"standard\",\"q\":\"Convert log_5(x) = 2 to exponential form.\",\"a\":\"5^2 = x, x = 25.\"},{\"d\":\"ap\",\"q\":\"As single log: 3 log(2) + log(7) - log(4).\",\"a\":\"log(8 · 7 / 4) = log(14).\"},{\"d\":\"ap\",\"q\":\"log_5(2) = a, log_5(3) = b. Express log_5(72).\",\"a\":\"72 = 2^3 · 3^2. log_5(72) = 3a + 2b.\"}]},{\"n\":11,\"date\":\"Sat 5/9\",\"unit\":\"2\",\"weekend\":true,\"today\":false,\"title\":\"Solving Exp & Log Equations + FRQ\",\"desc\":\"WEEKEND: x in exponent → log it. x in log → exponentiate. FRQ #4 territory.\",\"videos\":[{\"t\":\"2.13 Exp & Log Equations\",\"s\":\"flippedmath\",\"m\":\"15 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+2.13+exponential+logarithmic+equations\"}],\"lesson\":\"<h3>Three strategies</h3>\\n<h3>1. Same base</h3><p>2^(x+1) = 32 = 2^5 → x+1 = 5 → x = 4.</p>\\n<h3>2. Take a log</h3><p>3^x = 20 → x ln(3) = ln(20) → x = ln(20)/ln(3) ≈ 2.727.</p>\\n<h3>3. Exponentiate</h3><p>log_2(x) = 5 → x = 2^5 = 32.</p>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">ALWAYS CHECK LOG ANSWERS</div>Logs of negatives or 0 are undefined. Plug back in. If you get log of a negative, throw out.</div>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">Solve log(x) + log(x-3) = 1.</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>Product: log(x(x-3)) = 1.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>x^2 - 3x = 10.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">3</div><div>x^2 - 3x - 10 = 0 → (x-5)(x+2) = 0. x = 5 or x = -2.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">4</div><div>Check: x=5 OK, x=-2 gives log of negative — throw out.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">5</div><div>x = 5 only.</div></div></div>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">Solve 2^(x+1) = 7^x.</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>Take ln: (x+1) ln(2) = x ln(7).</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>x ln(2) + ln(2) = x ln(7).</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">3</div><div>ln(2) = x(ln(7) - ln(2)) = x ln(7/2).</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">4</div><div>x = ln(2) / ln(7/2) ≈ 0.553.</div></div></div>\",\"problems\":[{\"d\":\"warmup\",\"q\":\"Solve 2^x = 16.\",\"a\":\"x = 4.\"},{\"d\":\"warmup\",\"q\":\"Solve log_2(x) = 4.\",\"a\":\"x = 16.\"},{\"d\":\"warmup\",\"q\":\"Solve e^x = 5.\",\"a\":\"x = ln(5) ≈ 1.609.\"},{\"d\":\"standard\",\"q\":\"Solve 5^(2x) = 125.\",\"a\":\"2x = 3, x = 3/2.\"},{\"d\":\"standard\",\"q\":\"Solve log_3(x-2) = 4.\",\"a\":\"x - 2 = 81, x = 83.\"},{\"d\":\"standard\",\"q\":\"Solve 3^(x+1) = 50.\",\"a\":\"x = ln(50)/ln(3) - 1 ≈ 2.561.\"},{\"d\":\"standard\",\"q\":\"Solve log(x) + log(x+3) = 1.\",\"a\":\"x(x+3) = 10. x = 2 (x = -5 invalid).\"},{\"d\":\"standard\",\"q\":\"Solve 2^(x-1) = 5^x.\",\"a\":\"x = -ln(2)/ln(5/2) ≈ -0.756.\"},{\"d\":\"standard\",\"q\":\"Solve log_2(x) - log_2(x-3) = 2.\",\"a\":\"x/(x-3) = 4. x = 4.\"},{\"d\":\"ap\",\"q\":\"Solve e^(2x) - 5e^x + 6 = 0.\",\"a\":\"Let u = e^x. u^2 - 5u + 6 = 0. u = 2 or 3. x = ln(2) or ln(3).\"},{\"d\":\"ap\",\"q\":\"Bacteria doubles every 3 hours. Start 100. When 1000?\",\"a\":\"100 · 2^(t/3) = 1000. 2^(t/3) = 10. t = 3 ln(10)/ln(2) ≈ 9.97 hr.\"},{\"d\":\"ap\",\"q\":\"Solve log_4(2x) + log_4(x-3) = 2.\",\"a\":\"2x(x-3) = 16. x^2 - 3x - 8 = 0. x = (3 + sqrt(41))/2 ≈ 4.7 (other invalid).\"}]},{\"n\":12,\"date\":\"Sun 5/10\",\"unit\":\"2\",\"weekend\":true,\"today\":false,\"title\":\"UNIT 2 REVIEW + Practice FRQ\",\"desc\":\"WEEKEND: All Unit 2 mixed. Plus FRQ Type 2 (modeling).\",\"videos\":[{\"t\":\"AP Precalc Unit 2 Review\",\"s\":\"YouTube\",\"m\":\"40 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+Unit+2+review\"}],\"lesson\":\"<p>Mixed-mode practice. Unit 2 scrambled.</p>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">TWO BIG IDEAS</div>1. Exponentials = repeated multiplication. Geometric sequences in disguise.<br>2. Logs = exponents written sideways.</div>\\n<h3>FRQ Practice</h3><p>FRQ Practice tab → Exponential Modeling question.</p>\",\"problems\":[{\"d\":\"standard\",\"q\":\"Geometric a_1 = 5, r = 2. a_8?\",\"a\":\"5 · 128 = 640.\"},{\"d\":\"standard\",\"q\":\"$25k car, 12% depreciation/yr. After 6 years?\",\"a\":\"25000 · (0.88)^6 ≈ $11,621.\"},{\"d\":\"standard\",\"q\":\"Solve log_2(x) + log_2(x+6) = 4.\",\"a\":\"x(x+6) = 16. x = 2.\"},{\"d\":\"standard\",\"q\":\"Solve 4^(x-1) = 9.\",\"a\":\"x = 1 + ln(9)/ln(4) ≈ 2.585.\"},{\"d\":\"standard\",\"q\":\"Asymptote of f(x) = log(x-5)?\",\"a\":\"VA at x = 5.\"},{\"d\":\"standard\",\"q\":\"Solve ln(x+2) - ln(x-1) = ln(3).\",\"a\":\"(x+2)/(x-1) = 3. x = 5/2.\"},{\"d\":\"standard\",\"q\":\"75% remains after 10 yr. Find half-life.\",\"a\":\"h = 10 · ln(0.5)/ln(0.75) ≈ 24.1 yr.\"},{\"d\":\"ap\",\"q\":\"$1k continuous at r becomes $2500 in 8 yr. Find r.\",\"a\":\"r = ln(2.5)/8 ≈ 11.45%.\"},{\"d\":\"ap\",\"q\":\"f(1) = 6, f(4) = 48, exponential. Find a, b in f(x) = a · b^x.\",\"a\":\"b^3 = 8, b = 2. a = 3. f(x) = 3 · 2^x.\"},{\"d\":\"ap\",\"q\":\"For what x is log_3(x) greater than 2?\",\"a\":\"x greater than 9.\"}]},{\"n\":13,\"date\":\"Mon 5/11\",\"unit\":\"3\",\"weekend\":false,\"today\":false,\"title\":\"Unit Circle & Radian Measure\",\"desc\":\"Foundation of all trig. MEMORIZE the unit circle.\",\"videos\":[{\"t\":\"3.2 Sine, Cosine, Tangent\",\"s\":\"flippedmath\",\"m\":\"12 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+3.2+sine+cosine+tangent\"},{\"t\":\"3.3 Sine and Cosine Function Values\",\"s\":\"flippedmath\",\"m\":\"14 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+3.3+sine+cosine+values\"}],\"lesson\":\"<h3>Radians</h3><p>2pi rad = 360 deg. pi = 180, pi/2 = 90, pi/4 = 45, pi/6 = 30.</p>\\n<p>deg × pi/180 = rad. rad × 180/pi = deg.</p>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">UNIT CIRCLE (memorize)</div>Point at angle θ on unit circle has coords (cos θ, sin θ).</div>\\n<table class=\\\"ftbl\\\"><tr><th>θ rad</th><th>θ deg</th><th>cos θ</th><th>sin θ</th><th>tan θ</th></tr>\\n<tr><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>\\n<tr><td>pi/6</td><td>30</td><td>sqrt(3)/2</td><td>1/2</td><td>1/sqrt(3)</td></tr>\\n<tr><td>pi/4</td><td>45</td><td>sqrt(2)/2</td><td>sqrt(2)/2</td><td>1</td></tr>\\n<tr><td>pi/3</td><td>60</td><td>1/2</td><td>sqrt(3)/2</td><td>sqrt(3)</td></tr>\\n<tr><td>pi/2</td><td>90</td><td>0</td><td>1</td><td>undef</td></tr>\\n<tr><td>pi</td><td>180</td><td>-1</td><td>0</td><td>0</td></tr></table>\\n<h3>Quadrant signs (All Students Take Calculus)</h3>\\n<ul><li>Q1: All positive</li><li>Q2: Sin only</li><li>Q3: Tan only</li><li>Q4: Cos only</li></ul>\\n<h3>Reference angle</h3><p>For any angle outside Q1, find acute angle to x-axis. Values match Q1, just adjust signs.</p>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">Find sin(7pi/6).</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>7pi/6 in Q3.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>Reference: 7pi/6 - pi = pi/6.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">3</div><div>sin(pi/6) = 1/2. In Q3, sin negative. Answer = -1/2.</div></div></div>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">sin θ = 3/5, θ in Q2. Find cos θ.</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>sin^2 + cos^2 = 1. cos^2 = 1 - 9/25 = 16/25.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>cos = ±4/5. Q2 → neg. cos θ = -4/5.</div></div></div>\",\"problems\":[{\"d\":\"warmup\",\"q\":\"Convert 90 deg to rad.\",\"a\":\"pi/2.\"},{\"d\":\"warmup\",\"q\":\"Convert pi/3 to deg.\",\"a\":\"60 deg.\"},{\"d\":\"warmup\",\"q\":\"sin(0)?\",\"a\":\"0.\"},{\"d\":\"warmup\",\"q\":\"cos(pi)?\",\"a\":\"-1.\"},{\"d\":\"warmup\",\"q\":\"tan(pi/4)?\",\"a\":\"1.\"},{\"d\":\"standard\",\"q\":\"Convert 150 deg to rad.\",\"a\":\"5pi/6.\"},{\"d\":\"standard\",\"q\":\"sin(7pi/6)?\",\"a\":\"-1/2.\"},{\"d\":\"standard\",\"q\":\"cos(3pi/4)?\",\"a\":\"-sqrt(2)/2.\"},{\"d\":\"standard\",\"q\":\"tan(5pi/3)?\",\"a\":\"-sqrt(3).\"},{\"d\":\"standard\",\"q\":\"sin(11pi/6)?\",\"a\":\"-1/2.\"},{\"d\":\"standard\",\"q\":\"cos θ = 5/13, θ in Q1. sin θ?\",\"a\":\"+12/13.\"},{\"d\":\"ap\",\"q\":\"tan θ = -3/4, sin θ greater than 0. Find cos θ.\",\"a\":\"Q2. sin = 3/5, cos = -4/5.\"},{\"d\":\"ap\",\"q\":\"All θ in [0, 2pi) where sin θ = sqrt(2)/2.\",\"a\":\"pi/4 (Q1), 3pi/4 (Q2).\"}]},{\"n\":14,\"date\":\"Tue 5/12\",\"unit\":\"3\",\"weekend\":false,\"today\":false,\"title\":\"Sinusoidal Graphs & Transformations\",\"desc\":\"sin/cos waves: amplitude, period, phase, midline. FRQ #3 critical.\",\"videos\":[{\"t\":\"3.4 Sinusoidal Functions\",\"s\":\"flippedmath\",\"m\":\"13 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+3.4+sinusoidal\"},{\"t\":\"3.5 Sinusoidal Transformations\",\"s\":\"flippedmath\",\"m\":\"15 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+3.5+transformations\"},{\"t\":\"3.6 Sinusoidal Modeling\",\"s\":\"flippedmath\",\"m\":\"12 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+3.6+modeling\"}],\"lesson\":\"<h3>Form: f(x) = a sin(b(x-c)) + d</h3>\\n<table class=\\\"ftbl\\\"><tr><th>Param</th><th>Effect</th></tr>\\n<tr><td>|a|</td><td>Amplitude (max - min)/2</td></tr>\\n<tr><td>2pi/|b|</td><td>Period</td></tr>\\n<tr><td>c</td><td>Phase shift</td></tr>\\n<tr><td>d</td><td>Midline y = d</td></tr></table>\\n<ul><li>Max = d + |a|, Min = d - |a|</li>\\n<li>sin starts at midline going UP (or DOWN if a less than 0)</li>\\n<li>cos starts at MAX (or min if a less than 0)</li></ul>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">BUILDING A MODEL</div>Given max M, min m: midline d = (M+m)/2. Amp a = (M-m)/2. Then b from period.</div>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">For f(x) = 3 sin(2x) + 1: amp, period, midline, max, min?</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>a = 3, b = 2, c = 0, d = 1.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>Amp 3. Period 2pi/2 = pi. Midline y = 1. Max 4. Min -2.</div></div></div>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">Ferris wheel max 60ft, min 4ft, period 2 min. Start at min. Write h(t).</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>Mid 32, amp 28. b = pi.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>Start at min = use -cos.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">3</div><div>h(t) = -28 cos(pi · t) + 32. Check h(0) = 4. OK.</div></div></div>\",\"problems\":[{\"d\":\"warmup\",\"q\":\"Amp of f(x) = 5 sin(x)?\",\"a\":\"5.\"},{\"d\":\"warmup\",\"q\":\"Period of f(x) = sin(2x)?\",\"a\":\"pi.\"},{\"d\":\"warmup\",\"q\":\"Midline of f(x) = cos(x) + 7?\",\"a\":\"y = 7.\"},{\"d\":\"standard\",\"q\":\"f(x) = 3 sin(2x) + 1: all properties?\",\"a\":\"Amp 3, period pi, mid y=1, max 4, min -2.\"},{\"d\":\"standard\",\"q\":\"f(x) = -2 cos(pi · x): period and amp?\",\"a\":\"Amp 2, period 2.\"},{\"d\":\"standard\",\"q\":\"f(x) = 4 cos(pi x/2) - 3: amp, period, max, min?\",\"a\":\"Amp 4, period 4, max 1, min -7.\"},{\"d\":\"standard\",\"q\":\"Sin: amp 6, period 4pi, mid y = 2.\",\"a\":\"b = 1/2. f(x) = 6 sin(x/2) + 2.\"},{\"d\":\"standard\",\"q\":\"Max 12, min 4, period 6. Cosine model?\",\"a\":\"f(x) = 4 cos(pi x/3) + 8.\"},{\"d\":\"ap\",\"q\":\"h(t) = 5 sin(pi t/3) + 7. (a) h(0)? (b) First max? (c) Period?\",\"a\":\"(a) 7. (b) pi t/3 = pi/2 → t = 1.5. (c) 6.\"},{\"d\":\"ap\",\"q\":\"Tide max 12ft at noon, min 2ft at 6pm, period 12 hr. Write d(t), t hours after midnight.\",\"a\":\"Mid 7, amp 5, b = pi/6. d(t) = 5 cos((pi/6)(t-12)) + 7.\"},{\"d\":\"ap\",\"q\":\"Crosses midline going UP at x=2 and again at x=10. Amp 4, midline y = -1. Sine model?\",\"a\":\"Period 8, b = pi/4, c = 2. f(x) = 4 sin((pi/4)(x-2)) - 1.\"}]},{\"n\":15,\"date\":\"Wed 5/13\",\"unit\":\"3\",\"weekend\":false,\"today\":false,\"title\":\"Tangent, Inverse Trig & Reciprocal\",\"desc\":\"tan, sec, csc, cot — and arcsin/arccos/arctan.\",\"videos\":[{\"t\":\"3.8 Tangent Function\",\"s\":\"flippedmath\",\"m\":\"11 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+3.8+tangent\"},{\"t\":\"3.9 Inverse Trig Functions\",\"s\":\"flippedmath\",\"m\":\"13 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+3.9+inverse+trig\"}],\"lesson\":\"<h3>Tangent</h3>\\n<p>tan(x) = sin(x)/cos(x). Period pi. VAs at pi/2 + n · pi.</p>\\n<h3>Reciprocal trig</h3>\\n<ul><li>sec(x) = 1/cos(x)</li><li>csc(x) = 1/sin(x)</li><li>cot(x) = cos(x)/sin(x)</li></ul>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">INVERSE TRIG (output is angle)</div>\\narcsin: range [-pi/2, pi/2]<br>arccos: range [0, pi]<br>arctan: range (-pi/2, pi/2)</div>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">arcsin(sqrt(3)/2)?</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>What angle in [-pi/2, pi/2] has sin = sqrt(3)/2?</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>sin(pi/3) = sqrt(3)/2. pi/3 in range. Answer: pi/3.</div></div></div>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">sec(pi/3)?</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>cos(pi/3) = 1/2.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>sec = 1/(1/2) = 2.</div></div></div>\",\"problems\":[{\"d\":\"warmup\",\"q\":\"Period of tan(x)?\",\"a\":\"pi.\"},{\"d\":\"warmup\",\"q\":\"sec(0)?\",\"a\":\"1.\"},{\"d\":\"warmup\",\"q\":\"csc(pi/2)?\",\"a\":\"1.\"},{\"d\":\"standard\",\"q\":\"arcsin(1)?\",\"a\":\"pi/2.\"},{\"d\":\"standard\",\"q\":\"arccos(0)?\",\"a\":\"pi/2.\"},{\"d\":\"standard\",\"q\":\"arctan(1)?\",\"a\":\"pi/4.\"},{\"d\":\"standard\",\"q\":\"arcsin(sqrt(3)/2)?\",\"a\":\"pi/3.\"},{\"d\":\"standard\",\"q\":\"arccos(-1/2)?\",\"a\":\"2pi/3.\"},{\"d\":\"standard\",\"q\":\"sec(pi/3)?\",\"a\":\"2.\"},{\"d\":\"standard\",\"q\":\"VAs of csc(x) on [0, 2pi]?\",\"a\":\"x = 0, pi, 2pi.\"},{\"d\":\"standard\",\"q\":\"arctan(-1)?\",\"a\":\"-pi/4.\"},{\"d\":\"ap\",\"q\":\"sin(arccos(3/5))?\",\"a\":\"Let θ = arccos(3/5). cos θ = 3/5, θ in [0, pi]. sin θ = 4/5.\"},{\"d\":\"ap\",\"q\":\"Solve tan(x) = sqrt(3) on [0, 2pi).\",\"a\":\"Reference pi/3. Q1, Q3. x = pi/3, 4pi/3.\"}]},{\"n\":16,\"date\":\"Thu 5/14\",\"unit\":\"3\",\"weekend\":false,\"today\":false,\"title\":\"Trig Identities & Solving Trig Equations\",\"desc\":\"Pythagorean identities + solving trig equations. FRQ #4 territory.\",\"videos\":[{\"t\":\"3.10 Trig Equations\",\"s\":\"flippedmath\",\"m\":\"14 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+3.10+trig+equations\"}],\"lesson\":\"<div class=\\\"callout\\\"><div class=\\\"lbl\\\">THREE PYTHAGOREAN IDENTITIES</div>\\n1. sin^2(x) + cos^2(x) = 1 (THE big one)<br>2. 1 + tan^2(x) = sec^2(x)<br>3. 1 + cot^2(x) = csc^2(x)</div>\\n<h3>Solving trig equations</h3>\\n<ol><li>Isolate trig function.</li><li>Find ONE angle (unit circle or inverse).</li>\\n<li>Find OTHER angles using quadrant symmetry.</li>\\n<li>For all real: + 2pi · n (sin/cos), + pi · n (tan).</li></ol>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">Solve 2 sin(x) = sqrt(3) on [0, 2pi).</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>sin(x) = sqrt(3)/2.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>Reference pi/3. Sin positive Q1, Q2.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">3</div><div>x = pi/3, 2pi/3.</div></div></div>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">Solve 2 sin^2(x) = sin(x) + 1 on [0, 2pi).</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>2 sin^2(x) - sin(x) - 1 = 0.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>(2 sin(x) + 1)(sin(x) - 1) = 0.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">3</div><div>sin(x) = -1/2 or 1.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">4</div><div>x = 7pi/6, 11pi/6 (sin = -1/2), pi/2 (sin = 1).</div></div></div>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">sin θ = 4/5, Q2. Find tan θ.</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>cos^2 = 1 - 16/25 = 9/25. cos = ±3/5. Q2 → -3/5.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>tan = (4/5)/(-3/5) = -4/3.</div></div></div>\",\"problems\":[{\"d\":\"warmup\",\"q\":\"cos(x) = 3/5, x in Q1. sin(x)?\",\"a\":\"+4/5.\"},{\"d\":\"warmup\",\"q\":\"Solve sin(x) = 1 on [0, 2pi).\",\"a\":\"pi/2.\"},{\"d\":\"warmup\",\"q\":\"Solve cos(x) = 0 on [0, 2pi).\",\"a\":\"pi/2, 3pi/2.\"},{\"d\":\"standard\",\"q\":\"Solve 2 cos(x) + 1 = 0 on [0, 2pi).\",\"a\":\"cos(x) = -1/2. x = 2pi/3, 4pi/3.\"},{\"d\":\"standard\",\"q\":\"Solve tan^2(x) = 3 on [0, 2pi).\",\"a\":\"tan = ±sqrt(3). x = pi/3, 2pi/3, 4pi/3, 5pi/3.\"},{\"d\":\"standard\",\"q\":\"Solve sin(x) = sqrt(2)/2 for all real.\",\"a\":\"x = pi/4 + 2pi · n or 3pi/4 + 2pi · n.\"},{\"d\":\"standard\",\"q\":\"Simplify sin^2(x) / (1 - cos(x)).\",\"a\":\"(1 - cos^2(x))/(1 - cos(x)) = (1-cos)(1+cos)/(1-cos) = 1 + cos(x).\"},{\"d\":\"standard\",\"q\":\"tan(x) = 2, Q1. sec(x)?\",\"a\":\"sec^2 = 1 + 4 = 5. sec = sqrt(5).\"},{\"d\":\"ap\",\"q\":\"Solve 2 cos^2(x) - 1 = 0 on [0, 2pi).\",\"a\":\"cos^2 = 1/2. cos = ±sqrt(2)/2. x = pi/4, 3pi/4, 5pi/4, 7pi/4.\"},{\"d\":\"ap\",\"q\":\"Solve sin(x) cos(x) = sin(x) on [0, 2pi).\",\"a\":\"sin(x)(cos(x) - 1) = 0. x = 0, pi.\"},{\"d\":\"ap\",\"q\":\"Verify (1 - cos^2(x))/sin(x) = sin(x).\",\"a\":\"sin^2(x)/sin(x) = sin(x). Verified.\"},{\"d\":\"ap\",\"q\":\"sec θ = 5/4, Q4. Find sin θ, tan θ.\",\"a\":\"cos = 4/5. sin^2 = 9/25. Q4 → sin = -3/5. tan = -3/4.\"}]},{\"n\":17,\"date\":\"Fri 5/15\",\"unit\":\"3\",\"weekend\":false,\"today\":false,\"title\":\"Polar Coordinates & Polar Functions\",\"desc\":\"Plot points using angle and distance from origin.\",\"videos\":[{\"t\":\"3.13 Polar Coordinates\",\"s\":\"flippedmath\",\"m\":\"12 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+3.13+polar+coordinates\"},{\"t\":\"3.14 Polar Function Graphs\",\"s\":\"flippedmath\",\"m\":\"14 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+3.14+polar+graphs\"}],\"lesson\":\"<h3>Polar (r, θ)</h3><p>r = distance from origin, θ = angle from positive x-axis.</p>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">CONVERSIONS</div>\\nPolar → Rect: x = r cos(θ), y = r sin(θ)<br>\\nRect → Polar: r = sqrt(x^2 + y^2), tan(θ) = y/x (check quadrant)</div>\\n<h3>Common polar curves</h3>\\n<ul><li>r = a: circle radius a at origin</li>\\n<li>r = a cos(θ): circle through origin on x-axis</li>\\n<li>r = a + b cos(θ): limacon (cardioid if a = b)</li>\\n<li>r = a cos(n · θ): rose. n odd → n petals. n even → 2n petals.</li></ul>\\n<h3>Rates of change</h3>\\n<p>If r increasing as θ increases → curve moves AWAY from origin. If r decreasing → TOWARD origin.</p>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">Convert (3, pi/6) polar to rect.</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>x = 3 cos(pi/6) = 3 · sqrt(3)/2 = 3 sqrt(3)/2.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>y = 3 sin(pi/6) = 3/2.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">3</div><div>(3 sqrt(3)/2, 3/2).</div></div></div>\\n<div class=\\\"we\\\"><div class=\\\"pst\\\">Convert (-1, 1) rect to polar.</div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">1</div><div>r = sqrt(2).</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">2</div><div>tan(θ) = -1, ref pi/4. (-1, 1) is Q2 → θ = 3pi/4.</div></div>\\n<div class=\\\"step\\\"><div class=\\\"sn\\\">3</div><div>(sqrt(2), 3pi/4).</div></div></div>\",\"problems\":[{\"d\":\"warmup\",\"q\":\"(4, 0) polar to rect.\",\"a\":\"(4, 0).\"},{\"d\":\"warmup\",\"q\":\"(2, pi/2) polar to rect.\",\"a\":\"(0, 2).\"},{\"d\":\"warmup\",\"q\":\"Petals of r = 3 cos(2 θ)?\",\"a\":\"n = 2 even, 2n = 4 petals.\"},{\"d\":\"standard\",\"q\":\"(3, pi/6) polar to rect.\",\"a\":\"(3 sqrt(3)/2, 3/2).\"},{\"d\":\"standard\",\"q\":\"(-1, 1) rect to polar.\",\"a\":\"(sqrt(2), 3pi/4).\"},{\"d\":\"standard\",\"q\":\"r = 2 + 2 cos(θ). r at θ=0? At pi?\",\"a\":\"4 and 0. Cardioid.\"},{\"d\":\"standard\",\"q\":\"Petals of r = 5 sin(3 θ)?\",\"a\":\"3 (n odd).\"},{\"d\":\"standard\",\"q\":\"Convert r = 4 to rect.\",\"a\":\"x^2 + y^2 = 16.\"},{\"d\":\"standard\",\"q\":\"Convert r = 4 sin(θ) to rect.\",\"a\":\"r^2 = 4r sin(θ). x^2 + y^2 = 4y. x^2 + (y-2)^2 = 4. Circle.\"},{\"d\":\"ap\",\"q\":\"(4, 4 sqrt(3)) rect to polar.\",\"a\":\"r = 8, θ = pi/3. (8, pi/3).\"},{\"d\":\"ap\",\"q\":\"r = 1 + cos(θ). Where decreasing on [0, 2pi)?\",\"a\":\"cos θ decreasing on (0, pi). So r decreasing on (0, pi).\"},{\"d\":\"ap\",\"q\":\"r = 3 sin(3 θ). First petal tip θ?\",\"a\":\"sin(3θ) = 1 → 3θ = pi/2 → θ = pi/6.\"}]},{\"n\":18,\"date\":\"Sat 5/16\",\"unit\":\"3\",\"weekend\":true,\"today\":false,\"title\":\"UNIT 3 REVIEW + FRQ Practice\",\"desc\":\"WEEKEND: All Unit 3 + FRQ Type 3 (sinusoidal modeling).\",\"videos\":[{\"t\":\"AP Precalc Unit 3 Full Review\",\"s\":\"YouTube\",\"m\":\"50 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+Unit+3+review\"}],\"lesson\":\"<p>Trig is about 30% of the AP exam. Nail today, nail a third of the test.</p>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">TOP 3 TO DRILL</div>\\n1. Unit circle for pi/6, pi/4, pi/3 and reflections (NON-NEGOTIABLE)<br>\\n2. Sinusoidal modeling — equation from description<br>\\n3. Pythagorean identity manipulations</div>\\n<h3>FRQ Practice</h3><p>FRQ Practice tab → Sinusoidal Modeling question (mirrors 2025 FRQ #3).</p>\",\"problems\":[{\"d\":\"standard\",\"q\":\"sin(11pi/6)?\",\"a\":\"-1/2.\"},{\"d\":\"standard\",\"q\":\"Solve 2 sin^2(x) - sin(x) - 1 = 0 on [0, 2pi).\",\"a\":\"(2 sin(x) + 1)(sin(x) - 1) = 0. x = 7pi/6, 11pi/6, pi/2.\"},{\"d\":\"standard\",\"q\":\"Convert r = 4 sin(θ) to rect.\",\"a\":\"x^2 + (y-2)^2 = 4.\"},{\"d\":\"standard\",\"q\":\"r = 1 + cos(θ). When decreasing?\",\"a\":\"On (0, pi).\"},{\"d\":\"standard\",\"q\":\"Wheel: 1 rotation/6s, max 10ft, min 2ft. Start mid going up. h(t)?\",\"a\":\"Mid 6, amp 4, b = pi/3. h(t) = 4 sin(pi t/3) + 6.\"},{\"d\":\"standard\",\"q\":\"sec(5pi/3)?\",\"a\":\"cos(5pi/3) = 1/2 (Q4). sec = 2.\"},{\"d\":\"ap\",\"q\":\"sin θ = -5/13, cos θ greater than 0. Find tan θ.\",\"a\":\"Q4. cos = 12/13. tan = -5/12.\"},{\"d\":\"ap\",\"q\":\"Convert (4, 4 sqrt(3)) rect to polar.\",\"a\":\"(8, pi/3).\"},{\"d\":\"ap\",\"q\":\"Solve cos(2x) = 0 (all real).\",\"a\":\"2x = pi/2 + n · pi. x = pi/4 + n · pi/2.\"},{\"d\":\"ap\",\"q\":\"Function: midline y=5, amp 3, period 4, max at x=0. Equation?\",\"a\":\"Cosine starts at max. f(x) = 3 cos(pi x/2) + 5.\"}]},{\"n\":19,\"date\":\"Sun 5/17\",\"unit\":\"3\",\"weekend\":true,\"today\":false,\"title\":\"Trig Mastery Day 2 + Mixed FRQs\",\"desc\":\"WEEKEND: 2nd pass on trig + 1 FRQ from each unit.\",\"videos\":[{\"t\":\"AP Precalc Trig FRQ Walkthrough\",\"s\":\"YouTube\",\"m\":\"20 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+trig+FRQ+walkthrough\"}],\"lesson\":\"<p>If you got less than 4/5 yesterday on trig, redo Day 18 first. Then attempt these.</p>\\n<h3>Today's plan (90 min)</h3>\\n<ol><li>(20 min) Watch trig FRQ walkthrough video</li>\\n<li>(20 min) These 8 mixed problems</li>\\n<li>(50 min) Do all 4 sample FRQs in FRQ Practice tab. Time yourself: 15 min each.</li></ol>\",\"problems\":[{\"d\":\"standard\",\"q\":\"cos(5pi/4)?\",\"a\":\"Q3, ref pi/4. cos negative. -sqrt(2)/2.\"},{\"d\":\"standard\",\"q\":\"Solve sin(x) = -sqrt(3)/2 on [0, 2pi).\",\"a\":\"Reference pi/3. Q3, Q4. x = 4pi/3, 5pi/3.\"},{\"d\":\"standard\",\"q\":\"Period of f(x) = tan(2x)?\",\"a\":\"Period of tan is pi. Period of tan(2x) = pi/2.\"},{\"d\":\"standard\",\"q\":\"arccos(sqrt(3)/2)?\",\"a\":\"pi/6.\"},{\"d\":\"standard\",\"q\":\"Convert (5, 5) rect to polar.\",\"a\":\"r = 5 sqrt(2), θ = pi/4. (5 sqrt(2), pi/4).\"},{\"d\":\"ap\",\"q\":\"f periodic, max=20, min=4, period=8, starts at min when t=0. Cosine model?\",\"a\":\"Mid 12, amp 8, b = pi/4. Start at min → use -cos. f(t) = -8 cos(pi t/4) + 12.\"},{\"d\":\"ap\",\"q\":\"tan θ = -2, sin θ greater than 0. Find sec θ.\",\"a\":\"tan less than 0, sin greater than 0 → Q2. sec^2 = 1 + tan^2 = 5. sec = ±sqrt(5). Q2 → cos less than 0 → sec less than 0. sec = -sqrt(5).\"},{\"d\":\"ap\",\"q\":\"Solve cos(2x) = 1/2 on [0, 2pi).\",\"a\":\"2x = ±pi/3 + 2pi · n. 2x = pi/3, 5pi/3, 7pi/3, 11pi/3. x = pi/6, 5pi/6, 7pi/6, 11pi/6.\"}]},{\"n\":20,\"date\":\"Mon 5/18\",\"unit\":\"review\",\"weekend\":false,\"today\":false,\"title\":\"Full Practice Exam #1\",\"desc\":\"Take a complete timed practice exam. THE most important day.\",\"videos\":[{\"t\":\"Official AP Precalc Practice Walkthrough\",\"s\":\"College Board\",\"m\":\"60 min\",\"u\":\"https://apcentral.collegeboard.org/courses/ap-precalculus/exam\"}],\"lesson\":\"<p>Today: FULL test day. The single most important day of prep.</p>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">TEST CONDITIONS</div>\\n3 hours at a desk. Phone away. Use the official 2025 released exam (link below). Section I: 40 MCQ (28 no-calc + 12 calc), 2 hours. Section II: 4 FRQ (2 calc + 2 no-calc), 1 hour.</div>\\n<h3>Where to find the practice exam</h3>\\n<p><b>Best source:</b> AP Classroom (your teacher must enable access — ask tomorrow).</p>\\n<p><b>Public:</b> 2025 released FRQs at apcentral.collegeboard.org/courses/ap-precalculus/exam/past-exam-questions</p>\\n<p>The 2025 FRQs (with rubrics) are reproduced in the FRQ Practice tab.</p>\\n<h3>After</h3>\\n<p>Plug your raw scores into the Score Tracker tab. See your projected AP score. Note which TOPICS you missed (not just which questions). That tells you what to drill on Day 21.</p>\",\"problems\":[]},{\"n\":21,\"date\":\"Tue 5/19\",\"unit\":\"review\",\"weekend\":false,\"today\":false,\"title\":\"Targeted Weakness Drilling\",\"desc\":\"Based on yesterday, hammer the topics where you lost points.\",\"videos\":[],\"lesson\":\"<p>No new material today. Look at your practice exam. Identify 2-3 topics you missed most. Then:</p>\\n<ol><li>Re-watch the flippedmath video for that topic</li>\\n<li>Redo all problems from that day on this site</li>\\n<li>If still shaky, find 5 more problems on Khan Academy or Fiveable</li></ol>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">COMMON WEAK SPOTS → FIXES</div>\\n• <b>Polynomial long division</b> → Day 3, redo all<br>\\n• <b>Rational asymptotes</b> → Day 4, focus on degree comparison<br>\\n• <b>Log properties</b> → Day 10, drill table<br>\\n• <b>Unit circle blanks</b> → Day 13, write table 5x from memory<br>\\n• <b>Sinusoidal modeling</b> → Day 14, redo Ferris wheel-style<br>\\n• <b>FRQ point loss</b> → Strategy tab, re-read task verbs and write more clearly</div>\",\"problems\":[]},{\"n\":22,\"date\":\"Wed 5/20\",\"unit\":\"review\",\"weekend\":false,\"today\":false,\"title\":\"EXAM EVE: Light Review + Sleep\",\"desc\":\"Today is NOT a study day. Confidence day.\",\"videos\":[{\"t\":\"AP Precalc Exam Day Tips\",\"s\":\"YouTube\",\"m\":\"12 min\",\"u\":\"https://www.youtube.com/results?search_query=AP+Precalculus+exam+day+tips\"}],\"lesson\":\"<p><b>Today is NOT a study day. It is a confidence day.</b> You have done the work for 21 days.</p>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">TONIGHT'S PLAN</div>\\n• 30 min: review formula sheet (end behavior table, log properties, unit circle, Pythagorean ID, polar conversions)<br>\\n• Pack bag: 2 pencils, eraser, calculator (FRESH BATTERIES), ID, water, snack<br>\\n• In bed by 10pm. Sleep beats more cramming.<br>\\n• Eat protein for breakfast tomorrow.</div>\\n<p><b>Tomorrow morning:</b> arrive 15 min early. Set calc to RADIAN mode immediately. Breathe. You know this.</p>\\n<p style=\\\"text-align:center;margin-top:2rem;font-family:Fraunces,serif;font-style:italic;font-size:1.4rem;color:var(--accent)\\\">Go get it, Coop.</p>\",\"problems\":[]}],\"FRQS\":[{\"id\":\"frq1\",\"type\":\"Type 1: Function Concepts\",\"calc\":true,\"points\":6,\"title\":\"Function Behavior from a Table (mirrors 2025 FRQ#1)\",\"preview\":\"A decreasing function f given by table. Compute ARC, identify behavior, justify type.\",\"prompt\":\"<p><b>The function f is decreasing and is defined for all real numbers. The table gives values for f(x) at selected values of x.</b></p>\\n<table class=\\\"ftbl\\\"><tr><th>x</th><td>-2</td><td>0</td><td>1</td><td>3</td><td>5</td></tr>\\n<tr><th>f(x)</th><td>10</td><td>4</td><td>2</td><td>0.5</td><td>0.125</td></tr></table>\\n<p><b>(A)(i)</b> Find the value of f(1)/f(0) as a decimal approximation. Show work. <b>[1 pt]</b></p>\\n<p><b>(A)(ii)</b> Find the value of f(3)/f(1). Show work. <b>[1 pt]</b></p>\\n<p><b>(B)(i)</b> Find the average rate of change of f from x = 0 to x = 5. Show your computations. Express as decimal approximation. <b>[1 pt]</b></p>\\n<p><b>(B)(ii)</b> Use your answer in (B)(i) to interpret what this rate of change means in context. <b>[1 pt]</b></p>\\n<p><b>(C)(i)</b> Based on the values in the table, would f best be modeled as <i>linear, quadratic, exponential, or logarithmic</i>? Justify. <b>[1 pt]</b></p>\\n<p><b>(C)(ii)</b> Explain your reasoning using the data shown. <b>[1 pt]</b></p>\",\"solution\":\"<p><b>(A)(i)</b> f(1)/f(0) = 2/4 = 0.5 (or 0.500). <b>[1 pt]</b></p>\\n<p><b>(A)(ii)</b> f(3)/f(1) = 0.5/2 = 0.25 (or 0.250). <b>[1 pt]</b></p>\\n<p><b>(B)(i)</b> ARC = (f(5) - f(0))/(5 - 0) = (0.125 - 4)/5 = -3.875/5 = -0.775. <b>[1 pt]</b></p>\\n<p><b>(B)(ii)</b> On average, f decreases by 0.775 units per 1-unit increase in x over [0, 5]. <b>[1 pt]</b></p>\\n<p><b>(C)(i)</b> Best modeled as <b>exponential</b>. <b>[1 pt]</b></p>\\n<p><b>(C)(ii)</b> The ratios f(1)/f(0) = 0.5 and f(3)/f(1) = 0.25 = (0.5)^2. Successive output values change by a constant proportional factor of 0.5 over equal-length intervals (each unit of x), which is the defining feature of exponential functions. <b>[1 pt]</b></p>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">SCORING TIPS</div>• Always SHOW the quotient explicitly<br>• Use 3 decimal places<br>• For interpretation: include units AND direction (decrease/increase)<br>• For (C)(ii): state the rule (constant ratio = exponential) AND cite specific data values</div>\"},{\"id\":\"frq2\",\"type\":\"Type 2: Modeling Non-Periodic\",\"calc\":true,\"points\":6,\"title\":\"Quadratic Modeling from Data (mirrors 2025 FRQ#2)\",\"preview\":\"Build a quadratic model y = ax^2+bx+c from 3 data points, compute ARC, interpret context.\",\"prompt\":\"<p><b>A musician released a song. The table shows total plays D(t), in thousands, at time t months after release.</b></p>\\n<table class=\\\"ftbl\\\"><tr><th>t (months)</th><td>0</td><td>2</td><td>4</td></tr>\\n<tr><th>D(t) (thousands)</th><td>25</td><td>30</td><td>34</td></tr></table>\\n<p>The musician models D with a quadratic: D(t) = at^2 + bt + c, where a, b, c are constants.</p>\\n<p><b>(A)(i)</b> Use the data to write three equations involving a, b, c. <b>[1 pt]</b></p>\\n<p><b>(A)(ii)</b> Find values of a, b, c as decimal approximations. <b>[1 pt]</b></p>\\n<p><b>(B)(i)</b> Find the average rate of change of D from t = 0 to t = 4. Express as decimal. <b>[1 pt]</b></p>\\n<p><b>(B)(ii)</b> Use your ARC to estimate D(1.5). <b>[1 pt]</b></p>\\n<p><b>(C)</b> The quadratic model has exactly one absolute maximum or minimum. Based on the context, explain how that max/min can be used to determine a domain restriction for D. <b>[2 pt]</b></p>\",\"solution\":\"<p><b>(A)(i)</b> D(0) = c = 25; D(2) = 4a + 2b + c = 30; D(4) = 16a + 4b + c = 34. <b>[1 pt]</b></p>\\n<p><b>(A)(ii)</b> c = 25. From eq2: 4a + 2b = 5. From eq3: 16a + 4b = 9. Multiply eq2 by 2: 8a + 4b = 10. Subtract: 8a = -1, a = -0.125. Then 4(-0.125) + 2b = 5 → 2b = 5.5 → b = 2.75. <b>So a = -0.125, b = 2.75, c = 25.</b> <b>[1 pt]</b></p>\\n<p><b>(B)(i)</b> ARC = (D(4) - D(0))/(4 - 0) = (34 - 25)/4 = 9/4 = 2.25 (thousand plays/month). <b>[1 pt]</b></p>\\n<p><b>(B)(ii)</b> Estimate: D(1.5) ≈ D(0) + (1.5)(2.25) = 25 + 3.375 = 28.375 thousand plays. <b>[1 pt]</b></p>\\n<p><b>(C)</b> The quadratic D has a positive value of c = 25 and a = -0.125 less than 0, so the parabola opens DOWNWARD with an absolute maximum. Vertex at t = -b/(2a) = -2.75/(-0.25) = 11. After t = 11, D would decrease, but plays are total accumulated and cannot decrease in this context. So the domain should be restricted to t less than or equal to 11. <b>[2 pt]</b></p>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">SCORING TIPS</div>• Setting up equations from data is half the points — always do this step explicitly<br>• Decimal approximations to 3 places<br>• Include UNITS in interpretations (thousand plays, plays/month)<br>• Context restriction questions: tie back to real-world meaning</div>\"},{\"id\":\"frq3\",\"type\":\"Type 3: Periodic Modeling\",\"calc\":false,\"points\":6,\"title\":\"Sinusoidal Modeling: Vibrating Guitar String (mirrors 2025 FRQ#3)\",\"preview\":\"Build h(t) = a sin(b(t-c)) + d for vibrating string. Find a, b, c, d. Identify points on graph.\",\"prompt\":\"<p><b>For a guitar to make sound, strings vibrate up and down. At time t = 0 sec, point X starts at HIGHEST position 2 mm above resting. It passes through resting, reaches LOWEST 2 mm below, then returns. This motion happens 200 times in 1 second.</b></p>\\n<p>The sinusoidal function h models how far point X is from resting position, in mm, as a function of t.</p>\\n<p><b>(A)</b> The graph of h is sinusoidal. State amplitude, midline, period, max, min. <b>[2 pt]</b></p>\\n<p><b>(B)</b> Write h(t) = a sin(b(t - c)) + d. Find values of a, b, c, d. <b>[2 pt]</b></p>\\n<p><b>(C)(i)</b> Refer to graph. On interval (t1, t2) where t1 less than t2 are two consecutive zeros of h with h decreasing through both, which is true: (a) h positive and increasing, (b) h positive and decreasing, (c) h negative and increasing, (d) h negative and decreasing? <b>[1 pt]</b></p>\\n<p><b>(C)(ii)</b> Justify based on the graph. <b>[1 pt]</b></p>\",\"solution\":\"<p><b>(A)</b> Amplitude = (2 - (-2))/2 = 2 mm. Midline = 0 mm. Period = 1/200 sec = 0.005 sec. Max = 2 mm, Min = -2 mm. <b>[2 pt]</b></p>\\n<p><b>(B)</b> Vertical: a, d. d = midline = 0. |a| = amp = 2. Starts at MAX, so use cos OR sin shifted. b = 2pi/period = 2pi/0.005 = 400 pi. Using sin form requires phase shift c such that sin(b(0 - c)) = 1 → b · (-c) = pi/2 → c = -pi/(2b) = -1/800 = -0.00125. So a = 2, b = 400 pi, c = -1/800, d = 0. So h(t) = 2 sin(400 pi (t + 1/800)). Or equivalently h(t) = 2 cos(400 pi · t). <b>[2 pt]</b></p>\\n<p><b>(C)(i)</b> (b) h is positive and decreasing. <b>[1 pt]</b></p>\\n<p><b>(C)(ii)</b> The two consecutive zeros where h is going DOWN through both are at the start and end of the positive arch (the upper half-period). Between them, h is above the t-axis (positive) and is decreasing from max back through next zero. <b>[1 pt]</b></p>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">SCORING TIPS</div>• Period from frequency: period = 1/freq<br>• Starts at max → use cosine OR sine shifted<br>• b = 2pi/period<br>• When justifying graph behavior, reference the SHAPE explicitly</div>\"},{\"id\":\"frq4\",\"type\":\"Type 4: Symbolic Manipulation\",\"calc\":false,\"points\":6,\"title\":\"Algebra of Logs and Trig (mirrors 2025 FRQ#4)\",\"preview\":\"Solve log equations exactly. Rewrite trig in terms of one function.\",\"prompt\":\"<p><b>(A)(i)</b> Determine all real solutions to 2 log_3(x) = log_3(2x + 3). Show work. <b>[1 pt]</b></p>\\n<p><b>(A)(ii)</b> Determine the exact value of x. <b>[1 pt]</b></p>\\n<p><b>(B)(i)</b> Determine all values of x in the interval [0, 2pi) for which 2 sin^2(x) + sin(x) - 1 = 0. <b>[2 pt]</b></p>\\n<p><b>(B)(ii)</b> The function f is given by f(x) = (1 - cos^2(x)) / (sin(x) cos(x)). Rewrite f(x) as an expression in which tan(x) appears exactly once. <b>[2 pt]</b></p>\",\"solution\":\"<p><b>(A)(i)</b> 2 log_3(x) = log_3(x^2). So log_3(x^2) = log_3(2x + 3) → x^2 = 2x + 3 → x^2 - 2x - 3 = 0 → (x - 3)(x + 1) = 0 → x = 3 or x = -1. CHECK: domain requires x greater than 0 (log of positive). Reject x = -1. <b>x = 3.</b> <b>[1 pt]</b></p>\\n<p><b>(A)(ii)</b> Exact value: x = 3. <b>[1 pt]</b></p>\\n<p><b>(B)(i)</b> Factor: 2 sin^2(x) + sin(x) - 1 = (2 sin(x) - 1)(sin(x) + 1). So sin(x) = 1/2 or sin(x) = -1. sin(x) = 1/2: x = pi/6 or 5pi/6. sin(x) = -1: x = 3pi/2. <b>Solutions: x = pi/6, 5pi/6, 3pi/2.</b> <b>[2 pt]</b></p>\\n<p><b>(B)(ii)</b> Numerator: 1 - cos^2(x) = sin^2(x) (Pythagorean). So f(x) = sin^2(x) / (sin(x) · cos(x)) = sin(x) / cos(x) = <b>tan(x)</b>. <b>[2 pt]</b></p>\\n<div class=\\\"callout\\\"><div class=\\\"lbl\\\">SCORING TIPS</div>• EXACT values only — no decimals<br>• Always check log answers (domain constraints)<br>• Use parentheses: log_3(x^2) not log_3 x^2<br>• For trig identities, look for Pythagorean substitutions FIRST</div>\"}]}");
+var DAYS = DATA.DAYS;
+var FRQS = DATA.FRQS;
+
+function tick(){
+  var t = new Date("2026-05-21T08:00:00").getTime();
+  var diff = t - Date.now();
+  if(diff <= 0){
+    ["cd-d","cd-h","cd-m","cd-s"].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) el.textContent = "0";
+    });
+    return;
+  }
+  var d = Math.floor(diff/86400000);
+  var h = Math.floor((diff%86400000)/3600000);
+  var m = Math.floor((diff%3600000)/60000);
+  var s = Math.floor((diff%60000)/1000);
+  document.getElementById("cd-d").textContent = d;
+  document.getElementById("cd-h").textContent = String(h).padStart(2,"0");
+  document.getElementById("cd-m").textContent = String(m).padStart(2,"0");
+  document.getElementById("cd-s").textContent = String(s).padStart(2,"0");
+  document.getElementById("cd-mini").textContent = d + "d / " + h + "h to exam";
+}
+setInterval(tick, 1000);
+tick();
+
+document.querySelectorAll(".top-tab").forEach(function(t){
+  t.addEventListener("click", function(){
+    document.querySelectorAll(".top-tab").forEach(function(x){ x.classList.remove("active"); });
+    t.classList.add("active");
+    document.querySelectorAll(".view").forEach(function(v){ v.classList.remove("active"); });
+    document.getElementById("v-" + t.dataset.view).classList.add("active");
+    window.scrollTo(0, 0);
+  });
+});
+
+var progress = {};
+function loadProg(){
+  try {
+    var s = localStorage.getItem("precalc-prog-v2");
+    if(s) progress = JSON.parse(s);
+  } catch(e) { progress = {}; }
+  renderDays();
+  updateBar();
+}
+function saveProg(){
+  try { localStorage.setItem("precalc-prog-v2", JSON.stringify(progress)); } catch(e) {}
+}
+function getDay(n){
+  return progress[n] || {videos:false, lesson:false, problems:false, complete:false};
+}
+
+function updateBar(){
+  var done = DAYS.filter(function(d){ return getDay(d.n).complete; }).length;
+  document.getElementById("pfill").style.width = (done/22*100) + "%";
+  document.getElementById("ptext").textContent = done + " / 22 days";
+}
+
+function getCurrentDay(){
+  var start = new Date("2026-04-29");
+  var diff = Math.floor((Date.now() - start.getTime())/86400000) + 1;
+  return Math.min(Math.max(diff, 1), 22);
+}
+
+var currentFilter = "all";
+function renderDays(){
+  var c = document.getElementById("days-container");
+  var groups = {
+    "1":{title:"Unit 1", sub:"Polynomial & Rational Functions", meta:"~30-40% of exam · Days 1-7", days:[]},
+    "2":{title:"Unit 2", sub:"Exponential & Logarithmic", meta:"~27-40% of exam · Days 8-12", days:[]},
+    "3":{title:"Unit 3", sub:"Trigonometric & Polar", meta:"~30-35% of exam · Days 13-19", days:[]},
+    "review":{title:"Final Push", sub:"Practice Exams & Review", meta:"Days 20-22 · Exam 5/21", days:[]}
+  };
+  DAYS.forEach(function(d){ groups[d.unit].days.push(d); });
+  var today = getCurrentDay();
+  var html = "";
+  ["1","2","3","review"].forEach(function(k){
+    if(currentFilter !== "all" && currentFilter !== k) return;
+    var g = groups[k];
+    html += '<div class="unit-group"><div class="unit-header"><h2>' + g.title + ': <em>' + g.sub + '</em></h2><div class="meta">' + g.meta + '</div></div><div class="days-grid">';
+    g.days.forEach(function(d){
+      var p = getDay(d.n);
+      var cls = "day-card" + (p.complete ? " complete" : "") + (d.n === today ? " today" : "") + (d.weekend ? " weekend" : "");
+      html += '<div class="' + cls + '" data-day="' + d.n + '">';
+      if(d.weekend) html += '<span class="we-flag">WEEKEND</span>';
+      if(p.complete) html += '<span class="checkmark">OK</span>';
+      html += '<div class="day-num">Day ' + d.n + ' · ' + d.date + '</div>';
+      html += '<div class="day-title">' + d.title + '</div>';
+      html += '<div class="day-desc">' + d.desc + '</div>';
+      html += '<div class="day-checks">';
+      html += '<span class="check-pill' + (p.videos ? " done" : "") + '">Video</span>';
+      html += '<span class="check-pill' + (p.lesson ? " done" : "") + '">Read</span>';
+      html += '<span class="check-pill' + (p.problems ? " done" : "") + '">Drill</span>';
+      html += '</div></div>';
+    });
+    html += '</div></div>';
+  });
+  c.innerHTML = html;
+  document.querySelectorAll(".day-card").forEach(function(card){
+    card.addEventListener("click", function(){ openModal(parseInt(card.dataset.day)); });
+  });
+}
+
+function openModal(n){
+  var d = DAYS.find(function(x){ return x.n === n; });
+  if(!d) return;
+  var p = getDay(d.n);
+  document.getElementById("m-tag").textContent = "Day " + d.n + " · " + d.date + (d.weekend ? " · WEEKEND DEEP DIVE" : "");
+  document.getElementById("m-title").textContent = d.title;
+  var b = "";
+  if(d.videos.length > 0){
+    b += '<div class="section-h">Watch First</div>';
+    d.videos.forEach(function(v){
+      b += '<div class="video"><div><div class="vt">' + v.t + '</div><div class="vm">' + v.s + ' · ' + v.m + '</div></div><a class="wbtn" href="' + v.u + '" target="_blank">Watch</a></div>';
+    });
+  }
+  b += '<div class="section-h">Concepts to Master</div><div class="lesson">' + d.lesson + '</div>';
+  if(d.problems.length > 0){
+    b += '<div class="section-h">Drill Problems (no notes!)</div>';
+    d.problems.forEach(function(pr, i){
+      var dn = pr.d === "warmup" ? "Warm-up" : pr.d === "standard" ? "Standard" : "AP-level";
+      b += '<div class="problem"><div class="pn">Problem ' + (i+1) + '<span class="diff ' + pr.d + '">' + dn + '</span></div><div class="pt">' + pr.q + '</div><button class="rbtn" data-toggle="ans">Show Answer</button><div class="ans"><div style="font-family:JetBrains Mono,monospace;font-size:.6rem;color:var(--accent-soft);text-transform:uppercase;letter-spacing:.15em;margin-bottom:.4rem">Answer</div>' + pr.a + '</div></div>';
+    });
+  }
+  b += '<div class="section-h">Daily Checklist</div><div class="checklist">';
+  b += '<label class="' + (p.videos ? "checked" : "") + '"><input type="checkbox" data-task="videos"' + (p.videos ? " checked" : "") + '> Watched the videos</label>';
+  b += '<label class="' + (p.lesson ? "checked" : "") + '"><input type="checkbox" data-task="lesson"' + (p.lesson ? " checked" : "") + '> Read & understood the concepts</label>';
+  b += '<label class="' + (p.problems ? "checked" : "") + '"><input type="checkbox" data-task="problems"' + (p.problems ? " checked" : "") + '> Worked all drill problems</label>';
+  b += '</div><button class="cbtn' + (p.complete ? " done" : "") + '" id="completeBtn">' + (p.complete ? "Day Complete" : "Mark Day " + d.n + " Complete") + '</button>';
+  document.getElementById("m-body").innerHTML = b;
+  document.getElementById("modal").classList.add("open");
+  
+  document.querySelectorAll('[data-toggle="ans"]').forEach(function(btn){
+    btn.addEventListener("click", function(){
+      btn.nextElementSibling.classList.toggle("show");
+    });
+  });
+  
+  document.querySelectorAll(".checklist input").forEach(function(cb){
+    cb.addEventListener("change", function(){
+      var t = cb.dataset.task;
+      if(!progress[d.n]) progress[d.n] = {videos:false, lesson:false, problems:false, complete:false};
+      progress[d.n][t] = cb.checked;
+      cb.parentElement.classList.toggle("checked", cb.checked);
+      saveProg();
+    });
+  });
+  document.getElementById("completeBtn").addEventListener("click", function(){
+    if(!progress[d.n]) progress[d.n] = {videos:false, lesson:false, problems:false, complete:false};
+    progress[d.n].complete = !progress[d.n].complete;
+    if(progress[d.n].complete){
+      progress[d.n].videos = true;
+      progress[d.n].lesson = true;
+      progress[d.n].problems = true;
+    }
+    saveProg();
+    closeModal();
+    renderDays();
+    updateBar();
+  });
+}
+
+function closeModal(){
+  document.getElementById("modal").classList.remove("open");
+}
+document.getElementById("closeBtn").addEventListener("click", closeModal);
+document.getElementById("modal").addEventListener("click", function(e){
+  if(e.target.id === "modal") closeModal();
+});
+
+document.querySelectorAll(".unit-tab").forEach(function(t){
+  t.addEventListener("click", function(){
+    document.querySelectorAll(".unit-tab").forEach(function(x){ x.classList.remove("active"); });
+    t.classList.add("active");
+    currentFilter = t.dataset.unit;
+    renderDays();
+  });
+});
+
+document.getElementById("resetBtn").addEventListener("click", function(){
+  if(confirm("Reset ALL progress? Cannot be undone.")){
+    progress = {};
+    saveProg();
+    renderDays();
+    updateBar();
+  }
+});
+
+function renderFrqs(){
+  var html = "";
+  FRQS.forEach(function(f){
+    html += '<div class="frq-card" data-id="' + f.id + '">';
+    html += '<div class="meta"><span>' + f.type + (f.calc ? ' · Calculator' : ' · No calc') + '</span><span class="pts">' + f.points + ' pts</span></div>';
+    html += '<h3>' + f.title + '</h3>';
+    html += '<div class="pv">' + f.preview + '</div>';
+    html += '</div>';
+  });
+  document.getElementById("frq-list").innerHTML = html;
+  document.querySelectorAll(".frq-card").forEach(function(c){
+    c.addEventListener("click", function(){ openFrq(c.dataset.id); });
+  });
+}
+
+function openFrq(id){
+  var f = FRQS.find(function(x){ return x.id === id; });
+  document.getElementById("m-tag").textContent = f.type + (f.calc ? ' · Calculator allowed' : ' · NO calculator');
+  document.getElementById("m-title").textContent = f.title;
+  var html = '<div class="section-h">Question (' + f.points + ' points)</div>';
+  html += '<div class="lesson">' + f.prompt + '</div>';
+  html += '<div class="section-h">Solution & Rubric</div>';
+  html += '<button class="rbtn" id="solBtn">Show Solution</button>';
+  html += '<div id="frq-sol" style="display:none;margin-top:1rem" class="lesson">' + f.solution + '</div>';
+  document.getElementById("m-body").innerHTML = html;
+  document.getElementById("modal").classList.add("open");
+  document.getElementById("solBtn").addEventListener("click", function(){
+    document.getElementById("frq-sol").style.display = "block";
+    this.style.display = "none";
+  });
+}
+
+function updateScore(){
+  var mc = parseInt(document.getElementById("mcq").value) || 0;
+  var fr = parseInt(document.getElementById("frq").value) || 0;
+  if(mc > 40) mc = 40;
+  if(fr > 24) fr = 24;
+  if(mc < 0) mc = 0;
+  if(fr < 0) fr = 0;
+  var mcqScaled = (mc/40)*62.5;
+  var frqScaled = (fr/24)*37.5;
+  var comp = Math.round(mcqScaled + frqScaled);
+  var ap, fb;
+  if(comp >= 75){ ap = 5; fb = "5 RANGE — Top tier. Most colleges accept for credit."; }
+  else if(comp >= 60){ ap = 4; fb = "4 RANGE — YOUR TARGET. You are on track."; }
+  else if(comp >= 45){ ap = 3; fb = "3 — Passing. Push for 4 with more practice."; }
+  else if(comp >= 30){ ap = 2; fb = "2 — Need significant work. Focus on weak units."; }
+  else { ap = 1; fb = "Below 2 — Need intensive review."; }
+  document.getElementById("comp").textContent = comp;
+  document.getElementById("apscore").textContent = ap;
+  document.getElementById("feedback").textContent = fb;
+}
+document.getElementById("mcq").addEventListener("input", updateScore);
+document.getElementById("frq").addEventListener("input", updateScore);
+
+loadProg();
+renderFrqs();
+</script>
+</body>
+</html>
