@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cooper · AP Precalc Lockdown · 5/21</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=JetBrains+Mono:wght@400;500;700&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<style>
+  :root {
+    --ink: #0e1726;
+    --ink-soft: #1f2a3d;
+    --paper: #f4ede0;
+    --paper-soft: #ebe2d0;
+    --paper-warm: #e8dcc4;
+    --accent: #d64830;
+    --accent-soft: #e8a999;
+    --gold: #c8932a;
+    --green: #4a7c4f;
+    --line: #c9bfa8;
+    --muted: #6b7280;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter Tight', sans-serif;
+    line-height: 1.5;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at top left, rgba(214, 72, 48, 0.04), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(200, 147, 42, 0.05), transparent 50%);
+  }
+  /* Subtle paper grain */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='2' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+    z-index: 1;
+    mix-blend-mode: multiply;
+  }
+  .wrap { position: relative; z-index: 2; }
+
+  /* HEADER */
+  header {
+    border-bottom: 2px solid var(--ink);
+    padding: 1.2rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    background: var(--paper);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  header .brand {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 1.4rem;
+    letter-spacing: -0.02em;
+  }
+  header .brand .star { color: var(--accent); font-style: normal; }
+  header nav {
+    display: flex;
+    gap: 1.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  header nav a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: border-color 0.2s;
+  }
+  header nav a:hover { border-bottom-color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    padding: 3rem 2rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  .hero-text h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+  }
+  .hero-text h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+  }
+  .hero-text .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+  .hero-text p {
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    max-width: 520px;
+    margin-top: 1rem;
+  }
+
+  /* COUNTDOWN */
+  .countdown-card {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2rem;
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(14, 23, 38, 0.15), 8px 8px 0 var(--accent);
+  }
+  .countdown-card::before {
+    content: 'EXAM DAY';
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 4px 8px;
+  }
+  .countdown-card .date {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent-soft);
+  }
+  .countdown-card .exam-name {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .countdown-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    border-top: 1px solid rgba(244, 237, 224, 0.2);
+    padding-top: 1.5rem;
+  }
+  .countdown-grid .unit {
+    text-align: center;
+  }
+  .countdown-grid .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 2.2rem;
+    color: var(--paper);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .countdown-grid .lbl {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--paper-warm);
+    margin-top: 0.4rem;
+    opacity: 0.6;
+  }
+
+  /* PROGRESS BAR */
+  .progress-section {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1.5rem 2rem 2rem;
+  }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.6rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .progress-meta .left { color: var(--ink); font-weight: 700; }
+  .progress-meta .right { color: var(--muted); }
+  .progress-bar {
+    height: 8px;
+    background: var(--paper-soft);
+    border: 1px solid var(--ink);
+    position: relative;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    background-image: repeating-linear-gradient(
+      45deg,
+      var(--accent),
+      var(--accent) 8px,
+      #c33d28 8px,
+      #c33d28 16px
+    );
+  }
+
+  /* UNIT TABS */
+  .unit-tabs {
+    max-width: 1400px;
+    margin: 2rem auto 0;
+    padding: 0 2rem;
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--ink);
+  }
+  .unit-tab {
+    background: none;
+    border: 2px solid var(--ink);
+    border-bottom: none;
+    padding: 0.8rem 1.4rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    color: var(--ink);
+    margin-right: -2px;
+    transition: all 0.2s;
+    background: var(--paper-soft);
+  }
+  .unit-tab:hover { background: var(--paper-warm); }
+  .unit-tab.active {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .unit-tab .pct {
+    margin-left: 0.5rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .unit-tab.active .pct { color: var(--accent-soft); }
+
+  /* DAYS GRID */
+  .days-section {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 2rem 4rem;
+  }
+  .unit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed var(--line);
+  }
+  .unit-header h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+  }
+  .unit-header h2 em { font-style: italic; color: var(--accent); }
+  .unit-header .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  .days-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 1rem;
+  }
+
+  .day-card {
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    padding: 1.4rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .day-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .day-card.complete {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .day-card.complete::after {
+    content: '✓';
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: var(--green);
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  .day-card.today {
+    border-color: var(--accent);
+    border-width: 3px;
+    box-shadow: 4px 4px 0 var(--accent);
+  }
+  .day-card .day-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.7;
+    margin-bottom: 0.4rem;
+  }
+  .day-card.complete .day-num { color: var(--accent-soft); }
+  .day-card .day-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1.3rem;
+    line-height: 1.15;
+    margin-bottom: 0.5rem;
+  }
+  .day-card .day-desc {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+  .day-card.complete .day-desc { color: var(--paper-warm); }
+  .day-card .day-checks {
+    display: flex;
+    gap: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .check-pill {
+    padding: 3px 8px;
+    border: 1px solid currentColor;
+    opacity: 0.6;
+  }
+  .check-pill.done {
+    background: var(--green);
+    color: var(--paper);
+    border-color: var(--green);
+    opacity: 1;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(14, 23, 38, 0.7);
+    z-index: 100;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem;
+    overflow-y: auto;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--paper);
+    max-width: 900px;
+    width: 100%;
+    border: 3px solid var(--ink);
+    box-shadow: 12px 12px 0 var(--accent);
+    margin: 2rem 0;
+  }
+  .modal-header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .modal-header h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 1.6rem;
+  }
+  .modal-header .day-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.3rem;
+  }
+  .close-btn {
+    background: none;
+    border: 1px solid var(--paper);
+    color: var(--paper);
+    width: 32px;
+    height: 32px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .close-btn:hover { background: var(--accent); border-color: var(--accent); }
+  .modal-body {
+    padding: 2rem;
+  }
+
+  .section-h {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    margin: 1.5rem 0 0.8rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .section-h:first-child { margin-top: 0; }
+
+  .lesson-content {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  .lesson-content p { margin-bottom: 1rem; }
+  .lesson-content ul, .lesson-content ol {
+    margin-left: 1.4rem;
+    margin-bottom: 1rem;
+  }
+  .lesson-content li { margin-bottom: 0.4rem; }
+  .lesson-content strong { color: var(--accent); font-weight: 700; }
+  .lesson-content code {
+    background: var(--paper-soft);
+    padding: 1px 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9em;
+    border: 1px solid var(--line);
+  }
+  .callout {
+    background: var(--paper-soft);
+    border-left: 4px solid var(--accent);
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+  }
+  .callout .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+
+  table.formula-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+  }
+  table.formula-table th, table.formula-table td {
+    border: 1px solid var(--ink);
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+  }
+  table.formula-table th {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+  }
+  table.formula-table tr:nth-child(even) { background: var(--paper-soft); }
+
+  .video-card {
+    border: 2px solid var(--ink);
+    padding: 1rem 1.2rem;
+    margin-bottom: 0.6rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--paper-soft);
+    transition: all 0.15s;
+  }
+  .video-card:hover {
+    background: var(--paper-warm);
+    transform: translateX(4px);
+  }
+  .video-card .info { flex: 1; }
+  .video-card .vtitle {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+  }
+  .video-card .vmeta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .video-card .watch-btn {
+    background: var(--accent);
+    color: var(--paper);
+    padding: 0.5rem 0.9rem;
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    border: 2px solid var(--ink);
+    transition: all 0.15s;
+  }
+  .video-card .watch-btn:hover {
+    background: var(--ink);
+  }
+
+  .problem {
+    background: var(--paper-soft);
+    border: 1px solid var(--line);
+    padding: 1rem 1.2rem;
+    margin-bottom: 0.6rem;
+  }
+  .problem .pnum {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+  .problem .ptext { margin-bottom: 0.6rem; }
+  .reveal-btn {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 0.4rem 0.8rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+  }
+  .reveal-btn:hover { background: var(--accent); }
+  .answer {
+    display: none;
+    margin-top: 0.6rem;
+    padding: 0.8rem;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    border-left: 4px solid var(--accent);
+  }
+  .answer.show { display: block; }
+
+  .checklist {
+    margin-top: 1.5rem;
+  }
+  .checklist label {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--line);
+    margin-bottom: 0.4rem;
+    cursor: pointer;
+    background: var(--paper);
+    transition: all 0.15s;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .checklist label:hover { background: var(--paper-soft); }
+  .checklist input[type=checkbox] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent);
+  }
+  .checklist label.checked {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  .complete-day-btn {
+    width: 100%;
+    background: var(--accent);
+    color: var(--paper);
+    border: 2px solid var(--ink);
+    padding: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 1.5rem;
+    transition: all 0.15s;
+  }
+  .complete-day-btn:hover {
+    background: var(--ink);
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--accent);
+  }
+  .complete-day-btn.done {
+    background: var(--green);
+    cursor: default;
+  }
+
+  /* RESET */
+  .reset-section {
+    text-align: center;
+    padding: 2rem;
+    border-top: 1px dashed var(--line);
+    margin-top: 2rem;
+  }
+  .reset-btn {
+    background: none;
+    border: 1px solid var(--muted);
+    color: var(--muted);
+    padding: 0.5rem 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+  }
+  .reset-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; padding: 2rem 1rem; gap: 2rem; }
+    header { padding: 1rem; flex-direction: column; gap: 0.6rem; align-items: flex-start; }
+    header nav { gap: 1rem; flex-wrap: wrap; }
+    .unit-tabs { padding: 0 1rem; flex-wrap: wrap; }
+    .unit-tab { font-size: 0.65rem; padding: 0.6rem 0.9rem; }
+    .days-section, .progress-section { padding-left: 1rem; padding-right: 1rem; }
+    .days-grid { grid-template-columns: 1fr; }
+    .modal-overlay { padding: 0.5rem; }
+    .modal-body { padding: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="brand"><span class="star">✶</span> AP Precalc Lockdown · <em>Cooper</em></div>
+  <nav>
+    <a href="#today">Today</a>
+    <a href="#unit-1">Unit 1</a>
+    <a href="#unit-2">Unit 2</a>
+    <a href="#unit-3">Unit 3</a>
+    <a href="#review">Review</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-text">
+    <div class="label">22-day study plan · started 04/29/2026</div>
+    <h1>You don't <em>know nothing.</em><br>You just need a system.</h1>
+    <p>Three weeks. Twenty-two days. Three units that make up ~95% of the AP exam. We're going to teach it, drill it, and lock it in — one focused session at a time. Crew won't be the only thing you train for this spring.</p>
+  </div>
+  <div class="countdown-card">
+    <div class="date">May 21, 2026 · AM</div>
+    <div class="exam-name">AP Precalculus</div>
+    <div class="countdown-grid">
+      <div class="unit"><div class="num" id="cd-days">--</div><div class="lbl">Days</div></div>
+      <div class="unit"><div class="num" id="cd-hrs">--</div><div class="lbl">Hours</div></div>
+      <div class="unit"><div class="num" id="cd-min">--</div><div class="lbl">Min</div></div>
+      <div class="unit"><div class="num" id="cd-sec">--</div><div class="lbl">Sec</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="progress-section">
+  <div class="progress-meta">
+    <span class="left">Plan Progress</span>
+    <span class="right" id="prog-text">0 / 22 days complete</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="prog-fill"></div></div>
+</section>
+
+<div class="unit-tabs">
+  <button class="unit-tab active" data-unit="all">All Days</button>
+  <button class="unit-tab" data-unit="1">Unit 1 <span class="pct">35%</span></button>
+  <button class="unit-tab" data-unit="2">Unit 2 <span class="pct">30%</span></button>
+  <button class="unit-tab" data-unit="3">Unit 3 <span class="pct">30%</span></button>
+  <button class="unit-tab" data-unit="review">Review <span class="pct">5%</span></button>
+</div>
+
+<section class="days-section">
+  <div id="days-container"></div>
+</section>
+
+<div class="reset-section">
+  <button class="reset-btn" id="reset-btn">Reset all progress</button>
+</div>
+
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="day-tag" id="modal-tag">Day 1</div>
+        <h2 id="modal-title">Loading...</h2>
+      </div>
+      <button class="close-btn" id="close-btn">×</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+// ============= COUNTDOWN =============
+function updateCountdown() {
+  const target = new Date('2026-05-21T08:00:00').getTime();
+  const now = Date.now();
+  const diff = target - now;
+  if (diff <= 0) {
+    document.getElementById('cd-days').textContent = '0';
+    document.getElementById('cd-hrs').textContent = '00';
+    document.getElementById('cd-min').textContent = '00';
+    document.getElementById('cd-sec').textContent = '00';
+    return;
+  }
+  const d = Math.floor(diff / (1000*60*60*24));
+  const h = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+  const m = Math.floor((diff % (1000*60*60)) / (1000*60));
+  const s = Math.floor((diff % (1000*60)) / 1000);
+  document.getElementById('cd-days').textContent = String(d);
+  document.getElementById('cd-hrs').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-min').textContent = String(m).padStart(2,'0');
+  document.getElementById('cd-sec').textContent = String(s).padStart(2,'0');
+}
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// ============= STUDY PLAN DATA =============
+// 22 days from 4/29 -> 5/20, exam 5/21
+const DAYS = [
+  // ============ UNIT 1: POLYNOMIAL & RATIONAL (Days 1-7) ============
+  {
+    n: 1, date: 'Wed 4/29', unit: 1,
+    title: 'Polynomial Basics & End Behavior',
+    desc: 'Degree, leading coefficient, and how a polynomial behaves at the far ends.',
+    videos: [
+      { t: '1.4 Polynomial Functions & Rates of Change', s: 'flippedmath', m: '11 min', u: 'https://www.youtube.com/watch?v=GoSmJ8WEd2c' },
+      { t: '1.6 Polynomial Functions & End Behavior', s: 'flippedmath', m: '8 min', u: 'https://www.youtube.com/watch?v=dGZmRKbStTA' }
+    ],
+    lesson: `
+      <p>A <strong>polynomial</strong> is an expression with terms in the form (number)·x^(whole number). Examples: \\(3x^2 - 5x + 1\\) ✓ &nbsp; \\(\\sqrt{x}\\) ✗ &nbsp; \\(\\frac{1}{x}\\) ✗</p>
+      <p>The <strong>degree</strong> = highest exponent. The <strong>leading coefficient</strong> = number in front of the highest-power term.</p>
+      <p>For \\(f(x) = -2x^4 + 7x^2 - 3\\): degree is 4, leading coefficient is −2.</p>
+      <div class="callout">
+        <div class="label">⚡ The End Behavior Rule (memorize this)</div>
+        <strong>Even degree</strong> = both ends go the SAME direction. <strong>Odd degree</strong> = ends go OPPOSITE directions. The sign of the leading coefficient tells you which way the right end goes (+ = up, − = down).
+      </div>
+      <table class="formula-table">
+        <tr><th>Degree</th><th>Lead coef</th><th>x → −∞</th><th>x → +∞</th><th>Shape</th></tr>
+        <tr><td>Even</td><td>+</td><td>↑ +∞</td><td>↑ +∞</td><td>Both ends UP (U)</td></tr>
+        <tr><td>Even</td><td>−</td><td>↓ −∞</td><td>↓ −∞</td><td>Both ends DOWN (∩)</td></tr>
+        <tr><td>Odd</td><td>+</td><td>↓ −∞</td><td>↑ +∞</td><td>Down-left, up-right</td></tr>
+        <tr><td>Odd</td><td>−</td><td>↑ +∞</td><td>↓ −∞</td><td>Up-left, down-right</td></tr>
+      </table>
+    `,
+    problems: [
+      { q: 'For \\(f(x) = 4x^3 - x + 2\\): degree? leading coef? end behavior?', a: 'Degree 3 (odd), leading coef +4. As x→+∞, y→+∞. As x→−∞, y→−∞.' },
+      { q: 'For \\(g(x) = -x^6 + 5x^4 - 2x\\): end behavior?', a: 'Degree 6 (even), leading coef −1. Both ends go DOWN: y → −∞ on both sides.' },
+      { q: 'For \\(p(x) = -7x + 3x^3 - x^7\\): end behavior? (rearrange first!)', a: 'Highest power is −x⁷. Degree 7 (odd), leading coef −1. As x→+∞, y→−∞. As x→−∞, y→+∞.' },
+      { q: 'For \\(q(x) = 5 - 2x^4\\): end behavior?', a: 'Degree 4 (even), leading coef −2. Both ends go DOWN.' },
+      { q: 'A polynomial has both ends going to +∞. What can you say about it?', a: 'Even degree AND positive leading coefficient.' }
+    ]
+  },
+  {
+    n: 2, date: 'Thu 4/30', unit: 1,
+    title: 'Zeros, Multiplicity & Complex Roots',
+    desc: 'Finding x-intercepts, what multiplicity does to the graph, and the Fundamental Theorem of Algebra.',
+    videos: [
+      { t: '1.5A Polynomial Functions & Complex Zeros', s: 'flippedmath', m: '13 min', u: 'https://www.youtube.com/watch?v=LdLZqVTDSI0' },
+      { t: '1.5B Even and Odd Polynomials', s: 'flippedmath', m: '9 min', u: 'https://www.youtube.com/watch?v=TyvyOZbCfrI' }
+    ],
+    lesson: `
+      <p><strong>Zeros</strong> (or roots) are x-values where f(x) = 0 — the x-intercepts of the graph. To find them, set the polynomial equal to zero and factor.</p>
+      <p>Example: \\(f(x) = (x-2)(x+3)(x-5)\\) has zeros at \\(x = 2, -3, 5\\).</p>
+      <div class="callout">
+        <div class="label">📐 Fundamental Theorem of Algebra</div>
+        A polynomial of degree n has exactly <strong>n complex zeros</strong> (counting multiplicity). Real zeros are visible on the graph as x-intercepts; complex zeros are not.
+      </div>
+      <p><strong>Multiplicity</strong> = how many times a factor repeats. \\((x-2)^3\\) means x=2 has multiplicity 3.</p>
+      <ul>
+        <li><strong>Odd multiplicity</strong> → graph CROSSES the x-axis at that zero</li>
+        <li><strong>Even multiplicity</strong> → graph TOUCHES (bounces off) the x-axis</li>
+      </ul>
+      <p><strong>Complex/imaginary zeros come in pairs.</strong> If \\(2+3i\\) is a zero, so is \\(2-3i\\) (conjugate).</p>
+    `,
+    problems: [
+      { q: 'Find all zeros of \\(f(x) = (x-1)^2(x+4)(x-3)\\). State multiplicity.', a: 'x=1 (mult 2, touches), x=−4 (mult 1, crosses), x=3 (mult 1, crosses). Degree = 4.' },
+      { q: 'A degree-5 polynomial has zeros 2, −1, and 3+i. What other zero(s) MUST it have?', a: '3−i (complex conjugate). That gives 4 zeros so far; one more real zero is required to total 5.' },
+      { q: 'Sketch what the graph does at zero x=−2 if the factor is \\((x+2)^4\\).', a: 'Bounces off the x-axis (even multiplicity = touches and turns around).' },
+      { q: 'How many TOTAL complex zeros does \\(f(x) = 3x^7 - 2x + 1\\) have?', a: 'Exactly 7 (FTA: degree = total complex zeros).' },
+      { q: 'Write a polynomial of lowest degree with zeros at 0, 1, and −2.', a: '\\(f(x) = x(x-1)(x+2)\\) — degree 3.' }
+    ]
+  },
+  {
+    n: 3, date: 'Fri 5/1', unit: 1,
+    title: 'Polynomial Long Division',
+    desc: 'Dividing polynomials the long way (synthetic is NOT on the AP exam — long division is required).',
+    videos: [
+      { t: '1.11A Equivalent Polynomial Representations', s: 'flippedmath', m: '12 min', u: 'https://www.youtube.com/watch?v=l6_ghhd7kwQ' },
+      { t: 'Polynomial Long Division Walkthrough', s: 'Prof. Dave', m: '8 min', u: 'https://www.youtube.com/watch?v=FXgV9ySNusc' }
+    ],
+    lesson: `
+      <p>The AP exam tests <strong>polynomial long division</strong> (not synthetic). It's the same idea as long division with numbers.</p>
+      <p>Divide \\(\\frac{2x^3 - 3x^2 + 4x - 1}{x - 2}\\):</p>
+      <ol>
+        <li>How many times does x go into 2x³? → 2x² (write on top)</li>
+        <li>Multiply 2x²(x−2) = 2x³ − 4x². Subtract from top.</li>
+        <li>Bring down next term. Repeat.</li>
+        <li>Result: quotient + remainder/divisor</li>
+      </ol>
+      <div class="callout">
+        <div class="label">🔑 Two Critical Rules</div>
+        1. Always write the dividend in <strong>standard form</strong> (high to low degree). Insert <strong>0x^k</strong> for missing degrees!<br>
+        2. Final answer: \\(\\text{quotient} + \\frac{\\text{remainder}}{\\text{divisor}}\\)
+      </div>
+      <p><strong>Remainder Theorem:</strong> The remainder when you divide f(x) by (x−c) equals f(c). Quick test for whether (x−c) is a factor!</p>
+    `,
+    problems: [
+      { q: 'Divide \\((x^3 - 4x^2 + 6x - 4) \\div (x - 2)\\).', a: 'Quotient: x² − 2x + 2, remainder 0. So (x−2) IS a factor.' },
+      { q: 'Divide \\((2x^3 + 3x - 5) \\div (x - 1)\\). Watch out for missing term!', a: 'Rewrite as 2x³ + 0x² + 3x − 5. Quotient: 2x² + 2x + 5, remainder 0.' },
+      { q: 'Use the Remainder Theorem: if \\(f(x) = x^3 - 2x + 7\\), what is the remainder when divided by (x − 1)?', a: 'f(1) = 1 − 2 + 7 = 6. Remainder = 6.' },
+      { q: 'Is (x + 3) a factor of \\(x^3 + 2x^2 - 5x - 6\\)?', a: 'f(−3) = −27 + 18 + 15 − 6 = 0. Yes — remainder is 0, so (x+3) is a factor.' }
+    ]
+  },
+  {
+    n: 4, date: 'Sat 5/2', unit: 1,
+    title: 'Rational Functions & Asymptotes',
+    desc: 'Vertical, horizontal, and slant asymptotes — when each one happens and how to find them.',
+    videos: [
+      { t: '1.7 Rational Functions & End Behavior', s: 'flippedmath', m: '14 min', u: 'https://www.youtube.com/watch?v=5KGqjBbSVuM' },
+      { t: '1.8 Rational Functions & Zeros', s: 'flippedmath', m: '10 min', u: 'https://www.youtube.com/watch?v=rWZuJxvW1OI' }
+    ],
+    lesson: `
+      <p>A <strong>rational function</strong> is one polynomial divided by another: \\(f(x) = \\frac{p(x)}{q(x)}\\).</p>
+      <p><strong>Vertical asymptote (VA):</strong> where the denominator = 0 (and the factor doesn't cancel). Set q(x) = 0, solve.</p>
+      <div class="callout">
+        <div class="label">🪜 Horizontal Asymptote Rules (compare degrees)</div>
+        Let n = degree of numerator, d = degree of denominator.<br>
+        • <strong>n &lt; d</strong> → HA at <strong>y = 0</strong><br>
+        • <strong>n = d</strong> → HA at <strong>y = (ratio of leading coefficients)</strong><br>
+        • <strong>n &gt; d</strong> → NO horizontal asymptote (slant if n = d+1)
+      </div>
+      <p><strong>Slant asymptote</strong> happens when n = d + 1. Use polynomial long division — the quotient (ignore the remainder) IS the slant asymptote.</p>
+      <p><strong>Holes</strong> happen when a factor cancels in numerator and denominator. The hole is at the x-value that made that factor zero.</p>
+    `,
+    problems: [
+      { q: 'Find VA and HA of \\(f(x) = \\frac{2x+1}{x-3}\\).', a: 'VA: x = 3. Degrees equal (1=1), so HA: y = 2/1 = 2.' },
+      { q: 'Find HA of \\(f(x) = \\frac{x^2 + 1}{x^3 - x}\\).', a: 'Degree of num (2) < degree of denom (3), so HA: y = 0.' },
+      { q: 'Find asymptote(s) of \\(f(x) = \\frac{x^2 - 4}{x + 1}\\).', a: 'Numerator degree (2) > denominator (1), and 2 = 1+1, so SLANT asymptote. Long division gives y = x − 1.' },
+      { q: 'Find any holes in \\(f(x) = \\frac{(x-2)(x+1)}{(x-2)(x-3)}\\).', a: 'The (x−2) cancels → hole at x = 2. After canceling, VA at x = 3.' },
+      { q: 'Where are the zeros of \\(f(x) = \\frac{x^2 - 9}{x + 2}\\)?', a: "Set numerator = 0: x² = 9, so x = ±3. (Check denom isn't zero there — it's not.) Zeros at x = 3, −3." }
+    ]
+  },
+  {
+    n: 5, date: 'Sun 5/3', unit: 1,
+    title: 'Function Transformations',
+    desc: 'Shifts, stretches, reflections — and how to read them off the equation.',
+    videos: [
+      { t: '1.12 Transformations of Functions', s: 'flippedmath', m: '16 min', u: 'https://www.youtube.com/watch?v=jL3LwS6Brfk' }
+    ],
+    lesson: `
+      <p>For \\(g(x) = a \\cdot f(b(x - h)) + k\\):</p>
+      <table class="formula-table">
+        <tr><th>Symbol</th><th>What it does</th><th>Direction</th></tr>
+        <tr><td>k (outside +)</td><td>Vertical shift</td><td>Up if k>0, down if k<0</td></tr>
+        <tr><td>h (inside, with x−h)</td><td>Horizontal shift</td><td>RIGHT if h>0, LEFT if h<0 (opposite!)</td></tr>
+        <tr><td>a (outside ×)</td><td>Vertical stretch / reflect</td><td>|a|>1 stretch, |a|<1 shrink, a<0 flips over x-axis</td></tr>
+        <tr><td>b (inside ×)</td><td>Horizontal stretch / reflect</td><td>OPPOSITE — |b|>1 shrinks horizontally, b<0 flips over y-axis</td></tr>
+      </table>
+      <div class="callout">
+        <div class="label">⚠️ The "inside is opposite" trap</div>
+        Inside changes (h and b) work BACKWARDS from what they look like. \\(f(x-3)\\) shifts RIGHT 3, not left. \\(f(2x)\\) compresses horizontally by 1/2, not stretches.
+      </div>
+    `,
+    problems: [
+      { q: 'Describe transformations: \\(g(x) = -2f(x - 4) + 3\\)', a: 'Reflect over x-axis, vertical stretch ×2, shift right 4, shift up 3.' },
+      { q: 'Describe transformations: \\(g(x) = f(3x) - 5\\)', a: 'Horizontal compression by factor of 1/3, shift down 5.' },
+      { q: 'If \\(f(x) = x^2\\), write the equation for: shift left 6, shift up 2, reflect over x-axis.', a: '\\(g(x) = -(x+6)^2 + 2\\)' },
+      { q: 'If point (4, 7) is on f(x), where is the corresponding point on g(x) = f(x−2) + 5?', a: '(6, 12) — shift right 2, up 5.' }
+    ]
+  },
+  {
+    n: 6, date: 'Mon 5/4', unit: 1,
+    title: 'Rates of Change & Concavity',
+    desc: 'Average rate of change, and how rates of change tell you about concavity.',
+    videos: [
+      { t: '1.2 Rates of Change', s: 'flippedmath', m: '11 min', u: 'https://www.youtube.com/watch?v=h1-V37dTlHs' },
+      { t: '1.3 Linear & Quadratic Rates of Change', s: 'flippedmath', m: '13 min', u: 'https://www.youtube.com/watch?v=4D8qxyzy6tU' }
+    ],
+    lesson: `
+      <p><strong>Average Rate of Change</strong> from x = a to x = b is the slope between two points:</p>
+      <p style="text-align:center;font-size:1.2rem;">\\(\\text{ARC} = \\dfrac{f(b) - f(a)}{b - a}\\)</p>
+      <p>Same idea as slope of the secant line.</p>
+      <div class="callout">
+        <div class="label">🌊 Concavity from Rates of Change</div>
+        • If rates of change are <strong>increasing</strong> over equal-length intervals → graph is <strong>concave UP</strong> (cup ∪)<br>
+        • If rates of change are <strong>decreasing</strong> over equal intervals → graph is <strong>concave DOWN</strong> (cap ∩)<br>
+        • A <strong>point of inflection</strong> is where concavity changes.
+      </div>
+      <p>For polynomial degree n: at most (n−1) extrema and (n−2) points of inflection.</p>
+    `,
+    problems: [
+      { q: 'Find the avg rate of change of \\(f(x) = x^2 - 3x\\) from x = 1 to x = 4.', a: 'f(4) = 4, f(1) = −2. ARC = (4 − (−2))/(4−1) = 6/3 = 2.' },
+      { q: 'A function has these (x, f(x)) values: (0,1), (1,3), (2,7), (3,13). Concave up or down?', a: 'Differences: 2, 4, 6 — increasing. Concave UP.' },
+      { q: 'A degree 5 polynomial has at most how many extrema and inflection points?', a: 'At most 4 extrema, at most 3 points of inflection.' },
+      { q: "If a function's rate of change is decreasing, then negative, what does the graph look like?", a: 'Concave down, eventually decreasing — like the right side of a downward parabola.' }
+    ]
+  },
+  {
+    n: 7, date: 'Tue 5/5', unit: 1,
+    title: 'UNIT 1 REVIEW + Quiz',
+    desc: 'Mixed practice across everything from days 1–6. Push to mastery before moving to logs.',
+    videos: [
+      { t: 'AP Precalc Unit 1 Review (full)', s: 'Bryan Passwater', m: '45 min', u: 'https://www.youtube.com/watch?v=u43snOQ5Nms' }
+    ],
+    lesson: `
+      <p>Today is review day. Watch the full Unit 1 review video, then attempt the mixed problems below WITHOUT looking at your notes. If you get stuck on something, go back to the day it came from.</p>
+      <div class="callout">
+        <div class="label">🎯 Self-test rule</div>
+        If you can't get 4 out of 5 problems right cold, watch the review video AGAIN and redo the day where you struggled. Don't move on weak — Units 2 and 3 build on this.
+      </div>
+    `,
+    problems: [
+      { q: 'End behavior of \\(h(x) = -3x^4 + 2x^2 - x + 8\\)?', a: 'Even degree, neg leading coef. Both ends DOWN.' },
+      { q: 'Find all zeros and multiplicities: \\(f(x) = x^2(x-3)^3(x+1)\\).', a: 'x=0 (mult 2, bounces), x=3 (mult 3, crosses with flattening), x=−1 (mult 1, crosses). Degree 6.' },
+      { q: 'Divide: \\((x^3 + 2x^2 - 5) \\div (x + 1)\\).', a: 'Insert 0x: x³+2x²+0x−5. Quotient x² + x − 1, remainder −4. Answer: x² + x − 1 + (−4)/(x+1).' },
+      { q: 'Asymptotes of \\(f(x) = \\frac{3x^2 - 1}{x^2 + 4}\\)?', a: 'Degrees equal → HA: y = 3/1 = 3. Denominator never = 0 (x²+4 always positive), so NO vertical asymptote.' },
+      { q: 'Avg rate of change of \\(f(x) = 2^x\\) from x = 0 to x = 3?', a: 'f(3) = 8, f(0) = 1. ARC = (8−1)/3 = 7/3.' }
+    ]
+  },
+
+  // ============ UNIT 2: EXPONENTIAL & LOG (Days 8-12) ============
+  {
+    n: 8, date: 'Wed 5/6', unit: 2,
+    title: 'Sequences (Arithmetic & Geometric)',
+    desc: 'The bridge from algebra to exponentials. AP loves to test you on these.',
+    videos: [
+      { t: '2.1 Arithmetic & Geometric Sequences', s: 'flippedmath', m: '12 min', u: 'https://www.youtube.com/watch?v=THM3GLZyhNo' },
+      { t: '2.2 Linear vs Exponential Functions', s: 'flippedmath', m: '10 min', u: 'https://www.youtube.com/watch?v=ZQT0WT9Vd4Q' }
+    ],
+    lesson: `
+      <p><strong>Arithmetic sequence:</strong> add the same number each time (common difference d).</p>
+      <p>Formula: \\(a_n = a_1 + (n-1)d\\)</p>
+      <p>Example: 3, 7, 11, 15… → d = 4, so \\(a_n = 3 + (n-1)(4) = 4n - 1\\)</p>
+      <p><strong>Geometric sequence:</strong> multiply by the same number each time (common ratio r).</p>
+      <p>Formula: \\(a_n = a_1 \\cdot r^{n-1}\\)</p>
+      <p>Example: 2, 6, 18, 54… → r = 3, so \\(a_n = 2 \\cdot 3^{n-1}\\)</p>
+      <div class="callout">
+        <div class="label">🔗 Linear ↔ Arithmetic, Exponential ↔ Geometric</div>
+        Arithmetic sequences ARE linear functions of n. Geometric sequences ARE exponential functions of n. Same idea, different notation.
+      </div>
+      <p>Linear: equal CHANGES over equal intervals. Exponential: equal RATIOS over equal intervals.</p>
+    `,
+    problems: [
+      { q: 'Find a₁₀ for arithmetic: 5, 9, 13, 17…', a: 'd=4, a₁=5. a₁₀ = 5 + 9(4) = 41.' },
+      { q: 'Find a₆ for geometric: 4, 12, 36…', a: 'r=3, a₁=4. a₆ = 4·3⁵ = 4·243 = 972.' },
+      { q: 'Is the data {(1,2), (2,6), (3,18), (4,54)} arithmetic or geometric?', a: 'Ratios 6/2=3, 18/6=3, 54/18=3. Geometric, r=3.' },
+      { q: 'Write the explicit formula for: 100, 90, 80, 70…', a: 'd=−10, so aₙ = 100 + (n−1)(−10) = −10n + 110.' }
+    ]
+  },
+  {
+    n: 9, date: 'Thu 5/7', unit: 2,
+    title: 'Exponential Functions & Modeling',
+    desc: 'f(x) = a·bˣ — the function family that grows fast.',
+    videos: [
+      { t: '2.3 Exponential Functions', s: 'flippedmath', m: '11 min', u: 'https://www.youtube.com/watch?v=N-pxQEY8gp4' },
+      { t: '2.4 Exponential Function Manipulation', s: 'flippedmath', m: '13 min', u: 'https://www.youtube.com/watch?v=1zEZE8h7B1c' },
+      { t: '2.5 Modeling with Exponentials', s: 'flippedmath', m: '14 min', u: 'https://www.youtube.com/watch?v=DhCOOfa7r_w' }
+    ],
+    lesson: `
+      <p>Form: \\(f(x) = a \\cdot b^x\\) where a is the initial value and b is the growth/decay factor.</p>
+      <ul>
+        <li>If <strong>b > 1</strong> → growth (gets bigger)</li>
+        <li>If <strong>0 < b < 1</strong> → decay (gets smaller)</li>
+      </ul>
+      <p><strong>Growth rate:</strong> b = 1 + r (where r is the rate). Example: 5% growth → b = 1.05</p>
+      <p><strong>Decay rate:</strong> b = 1 − r. Example: 8% decay → b = 0.92</p>
+      <div class="callout">
+        <div class="label">💸 Compound Interest</div>
+        \\(A = P(1 + \\frac{r}{n})^{nt}\\) for n compoundings/year over t years.<br>
+        Continuous compounding: \\(A = Pe^{rt}\\)
+      </div>
+      <p>Half-life / doubling time problems use exponential models too. \\(A(t) = A_0 \\cdot (1/2)^{t/h}\\) where h is half-life.</p>
+    `,
+    problems: [
+      { q: 'A bacteria culture starts at 200 and doubles every hour. Population after 5 hours?', a: 'P(t) = 200·2ᵗ, so P(5) = 200·32 = 6400.' },
+      { q: '$1000 invested at 4% annual interest, compounded yearly for 10 years?', a: 'A = 1000(1.04)¹⁰ ≈ $1480.24' },
+      { q: 'A 50mg substance has half-life 8 hours. How much is left after 24 hours?', a: 'A = 50·(1/2)^(24/8) = 50·(1/2)³ = 50·(1/8) = 6.25 mg' },
+      { q: 'Identify a and b in \\(f(x) = 3 \\cdot (0.7)^x\\). Growth or decay?', a: 'a=3, b=0.7. Decay (b<1) at 30% per unit.' }
+    ]
+  },
+  {
+    n: 10, date: 'Fri 5/8', unit: 2,
+    title: 'Logarithms — The Inverse',
+    desc: `A log just asks: "what exponent do I need?" That's it. Stop being scared of them.`,
+    videos: [
+      { t: '2.9 Logarithmic Expressions', s: 'flippedmath', m: '11 min', u: 'https://www.youtube.com/watch?v=Z5myJ8dg_rM' },
+      { t: '2.10 Inverses of Exponential Functions', s: 'flippedmath', m: '10 min', u: 'https://www.youtube.com/watch?v=AiKKpAemH_M' },
+      { t: '2.11 Logarithmic Functions', s: 'flippedmath', m: '12 min', u: 'https://www.youtube.com/watch?v=7M1nJBg6m5o' }
+    ],
+    lesson: `
+      <p>\\(\\log_b(x) = y\\) is just another way of writing \\(b^y = x\\). Memorize this conversion — it's 70% of log problems.</p>
+      <p>Examples:</p>
+      <ul>
+        <li>\\(\\log_2(8) = 3\\) because \\(2^3 = 8\\)</li>
+        <li>\\(\\log_{10}(100) = 2\\) because \\(10^2 = 100\\)</li>
+        <li>\\(\\log_5(1) = 0\\) because \\(5^0 = 1\\)</li>
+      </ul>
+      <p><strong>ln</strong> = log base e. <strong>log</strong> (no base) = log base 10.</p>
+      <div class="callout">
+        <div class="label">📜 Log Properties (memorize!)</div>
+        • \\(\\log(AB) = \\log A + \\log B\\)<br>
+        • \\(\\log(A/B) = \\log A - \\log B\\)<br>
+        • \\(\\log(A^n) = n \\log A\\)<br>
+        • \\(\\log_b(b) = 1\\), \\(\\log_b(1) = 0\\)<br>
+        • Change of base: \\(\\log_b(x) = \\frac{\\ln x}{\\ln b}\\)
+      </div>
+      <p>Logs and exponentials are <strong>inverses</strong>. The graph of \\(y = \\log_b(x)\\) is the graph of \\(y = b^x\\) reflected over y = x.</p>
+    `,
+    problems: [
+      { q: 'Evaluate \\(\\log_3(81)\\).', a: '4, because 3⁴ = 81.' },
+      { q: 'Evaluate \\(\\log_4(1/16)\\).', a: '−2, because 4⁻² = 1/16.' },
+      { q: 'Expand: \\(\\log(\\frac{x^3 y}{z^2})\\)', a: '3 log(x) + log(y) − 2 log(z)' },
+      { q: 'Condense: \\(2 \\ln x - \\ln y + \\ln 5\\)', a: '\\(\\ln(\\frac{5x^2}{y})\\)' },
+      { q: 'Use change of base to find \\(\\log_2(50)\\). (calculator OK)', a: 'ln(50)/ln(2) ≈ 5.644' }
+    ]
+  },
+  {
+    n: 11, date: 'Sat 5/9', unit: 2,
+    title: 'Solving Exp & Log Equations',
+    desc: "When x is in the exponent → take log. When x is inside a log → exponentiate. That's the whole game.",
+    videos: [
+      { t: '2.13 Exp & Log Equations and Inequalities', s: 'flippedmath', m: '15 min', u: 'https://www.youtube.com/watch?v=lPePGQDBnqU' }
+    ],
+    lesson: `
+      <p><strong>Strategy 1: Same base.</strong> If you can rewrite both sides with the same base, equate exponents.</p>
+      <p>Example: \\(2^{x+1} = 32\\) → \\(2^{x+1} = 2^5\\) → x + 1 = 5 → x = 4</p>
+      <p><strong>Strategy 2: Take a log.</strong> When variable is in exponent and bases do not match, take log of both sides.</p>
+      <p>Example: \\(3^x = 20\\) → ln both sides → \\(x \\ln 3 = \\ln 20\\) → \\(x = \\frac{\\ln 20}{\\ln 3} ≈ 2.727\\)</p>
+      <p><strong>Strategy 3: Exponentiate.</strong> When variable is inside a log, raise the base to both sides.</p>
+      <p>Example: \\(\\log_2(x) = 5\\) → \\(2^{\\log_2(x)} = 2^5\\) → x = 32</p>
+      <div class="callout">
+        <div class="label">⚠️ Always check log answers!</div>
+        Logs of negatives or zero are undefined. After solving, plug back in — if you get log(negative) or log(0), throw out that solution.
+      </div>
+    `,
+    problems: [
+      { q: 'Solve: \\(5^{2x} = 125\\)', a: '125 = 5³, so 2x = 3, x = 3/2.' },
+      { q: 'Solve: \\(e^x = 12\\)', a: 'x = ln(12) ≈ 2.485' },
+      { q: 'Solve: \\(\\log_3(x - 2) = 4\\)', a: 'x − 2 = 3⁴ = 81, so x = 83.' },
+      { q: 'Solve: \\(\\log(x) + \\log(x - 3) = 1\\)', a: 'log(x(x−3)) = 1 → x²−3x = 10 → x²−3x−10 = 0 → (x−5)(x+2)=0. x=5 (x=−2 invalid: log of negative).' },
+      { q: 'Solve: \\(2^{x+1} = 7^x\\)', a: 'Take ln: (x+1)ln 2 = x ln 7 → x ln 2 + ln 2 = x ln 7 → ln 2 = x(ln 7 − ln 2) → x = ln 2 / ln(7/2) ≈ 0.553' }
+    ]
+  },
+  {
+    n: 12, date: 'Sun 5/10', unit: 2,
+    title: 'UNIT 2 REVIEW + Mixed Practice',
+    desc: 'Sequences, exponentials, logs — all together. Knock it out before trig.',
+    videos: [
+      { t: 'AP Precalc Unit 2 Review', s: 'Bryan Passwater', m: '40 min', u: 'https://www.youtube.com/watch?v=K1_yK7QQGsk' }
+    ],
+    lesson: `
+      <p>Mixed-mode practice today. The problems below scramble all of Unit 2. Don't look at your notes for the first attempt.</p>
+      <div class="callout">
+        <div class="label">🧠 The Two Big Ideas of Unit 2</div>
+        1. Exponentials are repeated multiplication — geometric sequences in disguise.<br>
+        2. Logs are just exponents written sideways. \\(\\log_b(x) = y \\iff b^y = x\\).
+      </div>
+    `,
+    problems: [
+      { q: 'A geometric sequence has a₁ = 5 and r = 2. Find a₈.', a: 'a₈ = 5·2⁷ = 640.' },
+      { q: 'A car worth $25,000 depreciates 12% per year. Value after 6 years?', a: 'V = 25000(0.88)⁶ ≈ $11,621' },
+      { q: 'Solve: \\(\\log_2(x) + \\log_2(x+6) = 4\\)', a: 'log₂(x(x+6)) = 4 → x²+6x=16 → x²+6x−16=0 → (x+8)(x−2). x=2 (x=−8 invalid).' },
+      { q: 'Solve: \\(4^{x-1} = 9\\)', a: 'x − 1 = log₄(9) = ln 9/ln 4. x = 1 + ln 9/ln 4 ≈ 2.585' },
+      { q: 'Identify the asymptote of \\(f(x) = \\log(x - 5)\\).', a: 'Vertical asymptote at x = 5 (where the inside = 0).' }
+    ]
+  },
+
+  // ============ UNIT 3: TRIG & POLAR (Days 13-19) ============
+  {
+    n: 13, date: 'Mon 5/11', unit: 3,
+    title: 'Unit Circle & Radian Measure',
+    desc: 'The foundation of all trig. Memorize this circle and the rest gets MUCH easier.',
+    videos: [
+      { t: '3.1 Periodic Phenomena', s: 'flippedmath', m: '8 min', u: 'https://www.youtube.com/watch?v=aQNwf1A05cE' },
+      { t: '3.2 Sine, Cosine, and Tangent', s: 'flippedmath', m: '12 min', u: 'https://www.youtube.com/watch?v=GgkICRkSIUI' },
+      { t: '3.3 Sine and Cosine Function Values', s: 'flippedmath', m: '14 min', u: 'https://www.youtube.com/watch?v=fU_OFu67rYc' }
+    ],
+    lesson: `
+      <p><strong>Radians:</strong> A full circle = 2π radians = 360°. So π = 180°, π/2 = 90°, π/4 = 45°, π/6 = 30°.</p>
+      <p>To convert: degrees × (π/180) = radians, OR radians × (180/π) = degrees.</p>
+      <div class="callout">
+        <div class="label">⭕ The Unit Circle (you MUST know this cold)</div>
+        On the unit circle, any point at angle θ has coordinates (cos θ, sin θ). Memorize these key angles:
+      </div>
+      <table class="formula-table">
+        <tr><th>θ</th><th>cos θ</th><th>sin θ</th><th>tan θ</th></tr>
+        <tr><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+        <tr><td>π/6 (30°)</td><td>√3/2</td><td>1/2</td><td>1/√3</td></tr>
+        <tr><td>π/4 (45°)</td><td>√2/2</td><td>√2/2</td><td>1</td></tr>
+        <tr><td>π/3 (60°)</td><td>1/2</td><td>√3/2</td><td>√3</td></tr>
+        <tr><td>π/2 (90°)</td><td>0</td><td>1</td><td>undef</td></tr>
+        <tr><td>π (180°)</td><td>−1</td><td>0</td><td>0</td></tr>
+      </table>
+      <p><strong>Quadrant signs:</strong> Q1 all+, Q2 sin+, Q3 tan+, Q4 cos+. Mnemonic: "All Students Take Calculus."</p>
+      <p><strong>tan = sin/cos.</strong> That's why tan is undefined where cos = 0.</p>
+    `,
+    problems: [
+      { q: 'Convert 150° to radians.', a: '150 × π/180 = 5π/6' },
+      { q: 'Find sin(7π/6).', a: '7π/6 is in Q3 (sin negative). Reference angle π/6, so sin(7π/6) = −1/2.' },
+      { q: 'Find cos(3π/4).', a: 'Q2 (cos negative). Reference π/4, so cos(3π/4) = −√2/2.' },
+      { q: 'Find tan(5π/3).', a: 'Q4 (tan negative). Reference π/3, tan(π/3) = √3, so tan(5π/3) = −√3.' },
+      { q: 'If sin θ = 3/5 and θ is in Q2, find cos θ.', a: 'Q2 → cos negative. Pythagorean: cos² + 9/25 = 1 → cos² = 16/25 → cos = −4/5.' }
+    ]
+  },
+  {
+    n: 14, date: 'Tue 5/12', unit: 3,
+    title: 'Sinusoidal Graphs & Transformations',
+    desc: 'sin and cos are waves. Amplitude, period, phase shift, midline — own this.',
+    videos: [
+      { t: '3.4 Sinusoidal Functions', s: 'flippedmath', m: '13 min', u: 'https://www.youtube.com/watch?v=9CNYfx7d4yI' },
+      { t: '3.5 Sinusoidal Function Transformations', s: 'flippedmath', m: '15 min', u: 'https://www.youtube.com/watch?v=NkfzdF6cOe8' },
+      { t: '3.6 Sinusoidal Function Context & Modeling', s: 'flippedmath', m: '12 min', u: 'https://www.youtube.com/watch?v=R0NGMGqB_Z8' }
+    ],
+    lesson: `
+      <p>General form: \\(f(x) = a \\sin(b(x - h)) + k\\)  (or cos)</p>
+      <table class="formula-table">
+        <tr><th>Parameter</th><th>What it does</th></tr>
+        <tr><td>|a| = amplitude</td><td>Half the distance between max and min</td></tr>
+        <tr><td>Period = 2π/|b|</td><td>How long for one full wave</td></tr>
+        <tr><td>h</td><td>Phase shift (horizontal)</td></tr>
+        <tr><td>k = midline</td><td>Vertical shift; midline is y = k</td></tr>
+      </table>
+      <div class="callout">
+        <div class="label">🌊 Key facts</div>
+        • Max value = k + |a|, Min value = k − |a|<br>
+        • sin starts at midline going up; cos starts at the max<br>
+        • If a is negative → graph flips upside down
+      </div>
+      <p><strong>Modeling:</strong> Given max M and min m, midline k = (M+m)/2, amplitude a = (M−m)/2.</p>
+    `,
+    problems: [
+      { q: 'For \\(f(x) = 3\\sin(2x) + 1\\): amplitude, period, midline, max, min?', a: 'Amp 3, period 2π/2 = π, midline y=1, max 4, min −2.' },
+      { q: 'For \\(f(x) = -2\\cos(\\pi(x - 1))\\): period and amplitude?', a: 'Amp |−2| = 2, period 2π/π = 2.' },
+      { q: 'A Ferris wheel reaches 60ft max, 4ft min, takes 2 minutes per rotation. Write a sinusoidal model with t in min, starting at min height.', a: 'Midline = 32, amp = 28, period 2 → b = π. Starting at min, use −cos: \\(h(t) = -28\\cos(\\pi t) + 32\\).' },
+      { q: 'Graph crosses midline going up at x=2 with period 8. What is b and the phase shift if using sin?', a: 'b = 2π/8 = π/4. Phase shift h = 2 (sin starts at midline going up). \\(f = a\\sin(\\frac{\\pi}{4}(x-2))+k\\).' }
+    ]
+  },
+  {
+    n: 15, date: 'Wed 5/13', unit: 3,
+    title: 'Tangent, Inverse Trig & Reciprocal Functions',
+    desc: 'tan, sec, csc, cot, and the inverse trig functions arcsin, arccos, arctan.',
+    videos: [
+      { t: '3.8 Tangent Function', s: 'flippedmath', m: '11 min', u: 'https://www.youtube.com/watch?v=qVwt3WMPMqY' },
+      { t: '3.9 Inverse Trig Functions', s: 'flippedmath', m: '13 min', u: 'https://www.youtube.com/watch?v=hKldxqVB-1Q' },
+      { t: '3.11 Secant, Cosecant, Cotangent', s: 'flippedmath', m: '10 min', u: 'https://www.youtube.com/watch?v=Wd-7AQ1bHJg' }
+    ],
+    lesson: `
+      <p><strong>Tangent function:</strong> \\(\\tan x = \\frac{\\sin x}{\\cos x}\\). Period π (not 2π!). Has vertical asymptotes where cos x = 0 (at π/2 + nπ).</p>
+      <p><strong>Reciprocal trig functions:</strong></p>
+      <ul>
+        <li>\\(\\sec x = \\frac{1}{\\cos x}\\) — VAs where cos = 0</li>
+        <li>\\(\\csc x = \\frac{1}{\\sin x}\\) — VAs where sin = 0</li>
+        <li>\\(\\cot x = \\frac{1}{\\tan x} = \\frac{\\cos x}{\\sin x}\\) — VAs where sin = 0</li>
+      </ul>
+      <div class="callout">
+        <div class="label">↩️ Inverse Trig Functions (output = an angle)</div>
+        Restricted ranges (so they're actual functions):<br>
+        • arcsin: range [−π/2, π/2]<br>
+        • arccos: range [0, π]<br>
+        • arctan: range (−π/2, π/2)
+      </div>
+      <p>Example: \\(\\arcsin(1/2) = \\pi/6\\) (only the answer in [−π/2, π/2]).</p>
+    `,
+    problems: [
+      { q: 'Find \\(\\arcsin(\\frac{\\sqrt{3}}{2})\\).', a: 'π/3 (the angle in [−π/2, π/2] whose sin is √3/2).' },
+      { q: 'Find \\(\\arccos(-\\frac{1}{2})\\).', a: '2π/3 (the angle in [0, π] whose cos is −1/2).' },
+      { q: 'Find \\(\\sec(\\pi/3)\\).', a: 'cos(π/3) = 1/2, so sec = 2.' },
+      { q: 'Where does \\(\\csc x\\) have vertical asymptotes on [0, 2π]?', a: 'Where sin x = 0: at x = 0, π, 2π.' },
+      { q: 'Find \\(\\arctan(-1)\\).', a: '−π/4 (the angle in (−π/2, π/2) whose tan is −1).' }
+    ]
+  },
+  {
+    n: 16, date: 'Thu 5/14', unit: 3,
+    title: 'Trig Identities & Solving Trig Equations',
+    desc: 'Pythagorean identities, equivalent forms, and solving for x when trig is involved.',
+    videos: [
+      { t: '3.10 Trig Equations & Inequalities', s: 'flippedmath', m: '14 min', u: 'https://www.youtube.com/watch?v=l3Y4j93gz1A' },
+      { t: '3.12 Equivalent Trig Representations', s: 'flippedmath', m: '11 min', u: 'https://www.youtube.com/watch?v=tqSKKQQdJDk' }
+    ],
+    lesson: `
+      <div class="callout">
+        <div class="label">🔱 The Three Pythagorean Identities</div>
+        • \\(\\sin^2 x + \\cos^2 x = 1\\) ← memorize this one above all<br>
+        • \\(1 + \\tan^2 x = \\sec^2 x\\) (divide top by cos²)<br>
+        • \\(1 + \\cot^2 x = \\csc^2 x\\) (divide top by sin²)
+      </div>
+      <p><strong>Solving trig equations:</strong></p>
+      <ol>
+        <li>Isolate the trig function (sin x = something)</li>
+        <li>Find ONE angle (often using inverse trig or unit circle)</li>
+        <li>Find the OTHER angle in the period using symmetry/quadrants</li>
+        <li>Add periods if asked for "all solutions" → +2πn (or +πn for tan)</li>
+      </ol>
+      <p>Example: solve \\(2\\sin x = 1\\) on [0, 2π]. → sin x = 1/2 → x = π/6 (Q1) and x = 5π/6 (Q2).</p>
+    `,
+    problems: [
+      { q: 'If \\(\\cos x = 3/5\\) and x is in Q4, find sin x using the Pythagorean identity.', a: 'sin² + 9/25 = 1 → sin² = 16/25 → sin = ±4/5. Q4 → sin negative. sin x = −4/5.' },
+      { q: 'Solve on [0, 2π): \\(2\\cos x + 1 = 0\\)', a: 'cos x = −1/2. Q2: x = 2π/3. Q3: x = 4π/3.' },
+      { q: 'Solve on [0, 2π): \\(\\tan^2 x = 3\\)', a: 'tan x = ±√3. Solutions: π/3, 2π/3, 4π/3, 5π/3.' },
+      { q: 'Solve all real solutions: \\(\\sin x = \\sqrt{2}/2\\)', a: 'x = π/4 + 2πn or x = 3π/4 + 2πn (n any integer).' },
+      { q: 'Simplify \\(\\frac{\\sin^2 x}{1 - \\cos x}\\).', a: 'Sub sin² = 1−cos². Then \\(\\frac{(1-\\cos)(1+\\cos)}{1-\\cos} = 1 + \\cos x\\).' }
+    ]
+  },
+  {
+    n: 17, date: 'Fri 5/15', unit: 3,
+    title: 'Polar Coordinates & Polar Functions',
+    desc: 'A whole different way to plot points — using angle and distance from origin.',
+    videos: [
+      { t: '3.13 Trig & Polar Coordinates', s: 'flippedmath', m: '12 min', u: 'https://www.youtube.com/watch?v=yMqOoP8YH_4' },
+      { t: '3.14 Polar Function Graphs', s: 'flippedmath', m: '14 min', u: 'https://www.youtube.com/watch?v=Yk0nHB5pHhM' },
+      { t: '3.15 Rates of Change in Polar Functions', s: 'flippedmath', m: '10 min', u: 'https://www.youtube.com/watch?v=l_NfOqIb_I8' }
+    ],
+    lesson: `
+      <p>Instead of (x, y), polar uses (r, θ) — distance r from origin and angle θ from positive x-axis.</p>
+      <div class="callout">
+        <div class="label">🔄 Conversion Formulas</div>
+        Polar → Rectangular: \\(x = r\\cos\\theta\\), \\(y = r\\sin\\theta\\)<br>
+        Rectangular → Polar: \\(r = \\sqrt{x^2 + y^2}\\), \\(\\tan\\theta = y/x\\)
+      </div>
+      <p><strong>Common polar curve types:</strong></p>
+      <ul>
+        <li>r = a (circle of radius a centered at origin)</li>
+        <li>r = a cos θ or r = a sin θ (circles passing through origin)</li>
+        <li>r = a + b cos θ (limaçons / cardioids if a = b)</li>
+        <li>r = a cos(nθ) (rose curves — n petals if n odd, 2n if n even)</li>
+      </ul>
+      <p><strong>Rate of change in polar:</strong> for r = f(θ), as θ increases, if r is increasing → curve moves away from origin; if r decreasing → toward origin. AP loves this.</p>
+    `,
+    problems: [
+      { q: 'Convert (3, π/6) from polar to rectangular.', a: 'x = 3·cos(π/6) = 3·(√3/2) = 3√3/2. y = 3·sin(π/6) = 3·(1/2) = 3/2. → (3√3/2, 3/2).' },
+      { q: 'Convert (−1, 1) from rectangular to polar.', a: 'r = √2. tan θ = 1/(−1) = −1. (−1,1) is Q2, so θ = 3π/4. → (√2, 3π/4).' },
+      { q: 'How many petals does r = 3 cos(4θ) have?', a: 'n = 4 (even), so 2n = 8 petals.' },
+      { q: 'For r = 2 + 2cos θ, what is r when θ = 0? When θ = π?', a: 'θ=0: r = 4. θ=π: r = 0. (Cardioid passing through origin at θ=π.)' }
+    ]
+  },
+  {
+    n: 18, date: 'Sat 5/16', unit: 3,
+    title: 'UNIT 3 REVIEW + Trig Mastery',
+    desc: 'Mixed trig + polar problems. The biggest "exam day return on investment" topic.',
+    videos: [
+      { t: 'AP Precalc Unit 3 Review', s: 'Bryan Passwater', m: '50 min', u: 'https://www.youtube.com/watch?v=H_3R3Mk8L4o' }
+    ],
+    lesson: `
+      <p>Trig is roughly 30% of the AP exam. If you nail today, you nail almost a third of the test.</p>
+      <div class="callout">
+        <div class="label">🎯 Top 3 things to drill</div>
+        1. Unit circle values for the key angles (π/6, π/4, π/3 and their reflections)<br>
+        2. Sinusoidal modeling (writing equation from a description or graph)<br>
+        3. Pythagorean identity manipulations
+      </div>
+    `,
+    problems: [
+      { q: 'Find sin(11π/6).', a: 'Q4, reference π/6. sin = −1/2.' },
+      { q: 'A wheel completes one rotation every 6 seconds. A point on the wheel reaches max height of 10ft and min of 2ft. Write h(t) starting at midline going up.', a: 'Mid 6, amp 4, period 6 → b = π/3. h(t) = 4 sin(πt/3) + 6.' },
+      { q: 'Solve on [0, 2π): \\(2\\sin^2 x = \\sin x + 1\\)', a: '2sin²x − sin x − 1 = 0 → (2sin x + 1)(sin x − 1) = 0. sin x = −1/2 or 1. x = 7π/6, 11π/6, π/2.' },
+      { q: 'Convert r = 4 sin θ to rectangular.', a: 'Multiply both sides by r: r² = 4r sin θ. → x² + y² = 4y → x² + (y−2)² = 4. (Circle radius 2 centered at (0,2).)' },
+      { q: 'For r = 1 + cos θ, on what interval of θ is r DECREASING?', a: 'cos is decreasing on (0, π), so r = 1+cos is decreasing there. r decreases on (0, π).' }
+    ]
+  },
+  {
+    n: 19, date: 'Sun 5/17', unit: 3,
+    title: 'Trig Mastery Day 2 + Mixed Drilling',
+    desc: 'Second pass on trig. By end of today you should feel comfortable, not panicked.',
+    videos: [
+      { t: 'AP Precalc Trig FRQ Walkthrough', s: 'Skew The Script', m: '20 min', u: 'https://www.youtube.com/watch?v=YxhJV1vP3Jc' }
+    ],
+    lesson: `
+      <p>Today: another pass at trig with FRQ-style questions. If you got fewer than 4/5 right yesterday, redo Day 18 problems first. Then attempt these.</p>
+    `,
+    problems: [
+      { q: 'A function has midline y = 5, amp 3, period 4, and is at maximum at x = 0. Write equation.', a: 'Cosine starts at max: f(x) = 3 cos(πx/2) + 5.' },
+      { q: 'If \\(\\sin\\theta = -\\frac{5}{13}\\) and \\(\\cos\\theta > 0\\), find tan θ.', a: 'cos > 0 and sin < 0 → Q4. cos² = 1 − 25/169 = 144/169, cos = 12/13. tan = sin/cos = −5/12.' },
+      { q: 'Find ALL solutions of \\(\\cos(2x) = 0\\).', a: '2x = π/2 + πn, so x = π/4 + πn/2.' },
+      { q: 'Convert (4, 4√3) to polar.', a: 'r = √(16 + 48) = 8. tan θ = 4√3/4 = √3, in Q1 → θ = π/3. → (8, π/3).' },
+      { q: "r = 3 sin(3θ): how many petals, and at what θ does the first petal's tip occur?", a: 'n=3 odd → 3 petals. Tip when sin(3θ) = 1, so 3θ = π/2 → θ = π/6.' }
+    ]
+  },
+
+  // ============ REVIEW / EXAM PREP (Days 20-22) ============
+  {
+    n: 20, date: 'Mon 5/18', unit: 'review',
+    title: 'Full Practice Exam #1',
+    desc: 'Take a complete AP Precalc practice exam under timed conditions. No notes, no calculator (Part A). Then grade it.',
+    videos: [
+      { t: 'Official AP Precalc Practice Exam Walkthrough', s: 'College Board', m: '60 min', u: 'https://www.youtube.com/watch?v=8KqQzM7AYSw' }
+    ],
+    lesson: `
+      <p>Today is FULL test day. This is the most important day of the entire prep.</p>
+      <div class="callout">
+        <div class="label">📝 Test Conditions</div>
+        Sit at a desk for 3 hours. Phone away. Use the official 2024 or sample AP Precalc practice exam (linked in checklist). Section I: 40 MC (28 no-calc + 12 calc), 2 hours. Section II: 4 FRQ (2 calc + 2 no-calc), 1 hour.
+      </div>
+      <p>After: grade it honestly. Note which TOPICS you missed (not just which questions). That tells you what to drill on Day 21.</p>
+    `,
+    problems: [
+      { q: 'Where to find the practice exam:', a: 'https://apcentral.collegeboard.org/courses/ap-precalculus/exam (Course & Exam Description Section IV has practice questions; AP Classroom has full released exams if your teacher enabled access).' }
+    ]
+  },
+  {
+    n: 21, date: 'Tue 5/19', unit: 'review',
+    title: 'Targeted Weakness Drilling',
+    desc: 'Based on what you missed yesterday, hammer those exact topics.',
+    videos: [],
+    lesson: `
+      <p>No new material today. Look at your practice exam. Identify the 2–3 topics you missed most. Then:</p>
+      <ol>
+        <li>Re-watch the relevant flippedmath video for that topic</li>
+        <li>Redo all the problems from that day on this site</li>
+        <li>Find 5 more practice problems on Fiveable or Khan Academy</li>
+      </ol>
+      <div class="callout">
+        <div class="label">🩹 Common weak spots and fixes</div>
+        • <strong>Polynomial long division mistakes</strong> → Day 3, redo all<br>
+        • <strong>Rational function asymptote confusion</strong> → Day 4, focus on degree comparison<br>
+        • <strong>Log property errors</strong> → Day 10, drill the property table<br>
+        • <strong>Unit circle blanking</strong> → Day 13, write the table from memory 5 times<br>
+        • <strong>Trig modeling word problems</strong> → Day 14, redo Ferris wheel-style problems
+      </div>
+    `,
+    problems: []
+  },
+  {
+    n: 22, date: 'Wed 5/20', unit: 'review',
+    title: 'EXAM EVE: Light Review + Sleep',
+    desc: 'Light review, formula sheet pass, early bedtime. Tomorrow is the day.',
+    videos: [
+      { t: 'AP Precalc Exam Day Tips', s: 'Bryan Passwater', m: '12 min', u: 'https://www.youtube.com/watch?v=8KqQzM7AYSw' }
+    ],
+    lesson: `
+      <p><strong>Today is NOT a study day. Today is a confidence day.</strong> You've done the work for 21 days.</p>
+      <div class="callout">
+        <div class="label">🌙 Tonight's plan</div>
+        • Spend 30 min reviewing your formula sheet (end behavior table, log properties, unit circle, Pythagorean identities, polar conversions)<br>
+        • Pack your bag: pencils, calculator, water bottle, snack, ID<br>
+        • In bed by 10pm — sleep is more valuable than another hour of studying right now<br>
+        • Eat protein for breakfast tomorrow morning
+      </div>
+      <p><strong>Tomorrow morning:</strong> arrive 15 min early. Breathe. You know this stuff. The test rewards understanding more than memorization, and you've built understanding all month. Trust it.</p>
+      <p style="text-align: center; margin-top: 2rem; font-family: 'Fraunces', serif; font-style: italic; font-size: 1.4rem; color: var(--accent);">Go get it, Coop. ⚓</p>
+    `,
+    problems: []
+  }
+];
+
+// ============= STORAGE & STATE =============
+let progress = {};
+
+function loadProgress() {
+  try {
+    const stored = localStorage.getItem('precalc-progress');
+    if (stored) {
+      progress = JSON.parse(stored);
+    }
+  } catch (e) {
+    progress = {};
+  }
+  renderDays();
+  updateProgressBar();
+}
+
+function saveProgress() {
+  try {
+    localStorage.setItem('precalc-progress', JSON.stringify(progress));
+  } catch (e) {
+    console.error('Save failed', e);
+  }
+}
+
+function getDayProgress(n) {
+  return progress[n] || { videos: false, lesson: false, problems: false, complete: false };
+}
+
+function updateProgressBar() {
+  const completed = DAYS.filter(d => getDayProgress(d.n).complete).length;
+  const pct = (completed / DAYS.length) * 100;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-text').textContent = `${completed} / ${DAYS.length} days complete`;
+}
+
+// ============= RENDERING =============
+let currentFilter = 'all';
+
+function renderDays() {
+  const container = document.getElementById('days-container');
+  const todayStr = new Date().toISOString().slice(0, 10);
+
+  // Group by unit
+  const groups = {
+    1: { title: 'Unit 1', sub: 'Polynomial & Rational Functions', meta: '~30-40% of exam · Days 1-7', days: [] },
+    2: { title: 'Unit 2', sub: 'Exponential & Logarithmic Functions', meta: '~27-40% of exam · Days 8-12', days: [] },
+    3: { title: 'Unit 3', sub: 'Trigonometric & Polar Functions', meta: '~30-35% of exam · Days 13-19', days: [] },
+    review: { title: 'Final Push', sub: 'Practice Exams & Review', meta: 'Days 20-22 · Exam 5/21', days: [] }
+  };
+
+  DAYS.forEach(d => groups[d.unit].days.push(d));
+
+  let html = '';
+  Object.entries(groups).forEach(([key, g]) => {
+    if (currentFilter !== 'all' && currentFilter !== key) return;
+    html += `<div id="unit-${key}" class="unit-group">
+      <div class="unit-header">
+        <h2>${g.title}: <em>${g.sub}</em></h2>
+        <div class="meta">${g.meta}</div>
+      </div>
+      <div class="days-grid">`;
+    g.days.forEach(d => {
+      const p = getDayProgress(d.n);
+      const isComplete = p.complete;
+      const isToday = d.n === getCurrentDay();
+      html += `
+        <div class="day-card ${isComplete ? 'complete' : ''} ${isToday ? 'today' : ''}" data-day="${d.n}">
+          <div class="day-num">Day ${d.n} · ${d.date}</div>
+          <div class="day-title">${d.title}</div>
+          <div class="day-desc">${d.desc}</div>
+          <div class="day-checks">
+            <span class="check-pill ${p.videos ? 'done' : ''}">📺 Video</span>
+            <span class="check-pill ${p.lesson ? 'done' : ''}">📖 Read</span>
+            <span class="check-pill ${p.problems ? 'done' : ''}">✏️ Drill</span>
+          </div>
+        </div>`;
+    });
+    html += `</div></div>`;
+  });
+  container.innerHTML = html;
+
+  document.querySelectorAll('.day-card').forEach(card => {
+    card.addEventListener('click', () => openModal(parseInt(card.dataset.day)));
+  });
+}
+
+function getCurrentDay() {
+  const start = new Date('2026-04-29');
+  const today = new Date();
+  const diff = Math.floor((today - start) / (1000 * 60 * 60 * 24)) + 1;
+  return Math.min(Math.max(diff, 1), 22);
+}
+
+// ============= MODAL =============
+function openModal(dayNum) {
+  const d = DAYS.find(x => x.n === dayNum);
+  if (!d) return;
+  const p = getDayProgress(d.n);
+
+  document.getElementById('modal-tag').textContent = `Day ${d.n} · ${d.date}`;
+  document.getElementById('modal-title').textContent = d.title;
+
+  let body = '';
+
+  // Videos section
+  if (d.videos.length > 0) {
+    body += `<div class="section-h">📺 Watch First</div>`;
+    d.videos.forEach(v => {
+      body += `
+        <div class="video-card">
+          <div class="info">
+            <div class="vtitle">${v.t}</div>
+            <div class="vmeta">${v.s} · ${v.m}</div>
+          </div>
+          <a class="watch-btn" href="${v.u}" target="_blank">Watch ▸</a>
+        </div>`;
+    });
+  }
+
+  // Lesson
+  body += `<div class="section-h">📖 Concepts to Master</div>`;
+  body += `<div class="lesson-content">${d.lesson}</div>`;
+
+  // Problems
+  if (d.problems.length > 0) {
+    body += `<div class="section-h">✏️ Drill Problems (no notes!)</div>`;
+    d.problems.forEach((pr, i) => {
+      body += `
+        <div class="problem">
+          <div class="pnum">Problem ${i + 1}</div>
+          <div class="ptext">${pr.q}</div>
+          <button class="reveal-btn" onclick="this.nextElementSibling.classList.toggle('show')">Show Answer</button>
+          <div class="answer">${pr.a}</div>
+        </div>`;
+    });
+  }
+
+  // Checklist
+  body += `<div class="section-h">✅ Daily Checklist</div>
+    <div class="checklist">
+      <label class="${p.videos ? 'checked' : ''}"><input type="checkbox" data-task="videos" ${p.videos ? 'checked' : ''}> Watched the videos</label>
+      <label class="${p.lesson ? 'checked' : ''}"><input type="checkbox" data-task="lesson" ${p.lesson ? 'checked' : ''}> Read & understood the concepts</label>
+      <label class="${p.problems ? 'checked' : ''}"><input type="checkbox" data-task="problems" ${p.problems ? 'checked' : ''}> Worked all drill problems</label>
+    </div>
+    <button class="complete-day-btn ${p.complete ? 'done' : ''}" id="complete-btn">${p.complete ? '✓ Day Complete' : 'Mark Day ' + d.n + ' Complete'}</button>`;
+
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('modal-overlay').classList.add('open');
+
+  // Render LaTeX
+  if (window.renderMathInElement) {
+    renderMathInElement(document.getElementById('modal-body'), {
+      delimiters: [
+        { left: '\\\\(', right: '\\\\)', display: false },
+        { left: '\\\\[', right: '\\\\]', display: true },
+        { left: '$$', right: '$$', display: true }
+      ],
+      throwOnError: false
+    });
+  }
+
+  // Wire checklist
+  document.querySelectorAll('.checklist input').forEach(cb => {
+    cb.addEventListener('change', async () => {
+      const task = cb.dataset.task;
+      if (!progress[d.n]) progress[d.n] = { videos: false, lesson: false, problems: false, complete: false };
+      progress[d.n][task] = cb.checked;
+      cb.parentElement.classList.toggle('checked', cb.checked);
+      saveProgress();
+    });
+  });
+
+  // Wire complete button
+  document.getElementById('complete-btn').addEventListener('click', async () => {
+    if (!progress[d.n]) progress[d.n] = { videos: false, lesson: false, problems: false, complete: false };
+    progress[d.n].complete = !progress[d.n].complete;
+    if (progress[d.n].complete) {
+      progress[d.n].videos = true;
+      progress[d.n].lesson = true;
+      progress[d.n].problems = true;
+    }
+    saveProgress();
+    closeModal();
+    renderDays();
+    updateProgressBar();
+  });
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+document.getElementById('close-btn').addEventListener('click', closeModal);
+document.getElementById('modal-overlay').addEventListener('click', (e) => {
+  if (e.target.id === 'modal-overlay') closeModal();
+});
+
+// ============= TABS =============
+document.querySelectorAll('.unit-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.unit-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentFilter = tab.dataset.unit;
+    renderDays();
+  });
+});
+
+// ============= RESET =============
+document.getElementById('reset-btn').addEventListener('click', async () => {
+  if (confirm('Reset ALL progress? This cannot be undone.')) {
+    progress = {};
+    saveProgress();
+    renderDays();
+    updateProgressBar();
+  }
+});
+
+// ============= INIT =============
+loadProgress();
+</script>
+</body>
+</html>
